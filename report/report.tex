@@ -18,6 +18,34 @@
 
 \section{Introduction}
 
+In various kind of diseases, it is important to choose the correct treatment at
+the current time point. Since the human body is too complex to be described
+directly using mathematics, special features are modeled with mathematical
+systems such as the Mackey-Glass equations for respiratory and hematopoietic 
+diseases \cite{mackey1977}. These models make use of available data about
+previous information in order to reduce the uncertainty under which a decision
+is done. This is especially important when the consequences of a decision are
+severe, for example the decision of breast cancer treatment after radiation.
+This particular problem can be addressed by using a stochastic differential 
+equation, as done by Oroji \textit{et al} \cite{oroji2016}.
+
+In different kinds of biological models, chaotic behavior is observed. Even the
+Mackey-Glass equations obtain chaotic behavior for certain choices of their
+parameters, as shown by Fischer \cite{farmer1982}. That means that even small
+perturbations of the time series prediction increase exponentially, which means
+that the time series prediction should be as robust as possible against noise.
+
+This gets imporant in particular because another characterstic of dealing with 
+biological data is the presence of noise. In 
+this report, we show that different kinds of noise assumptions can impact the
+results of time series prediction. We evaluate all our investigated problems
+with regard to the popular $i.i.d.$ random noise as well as memorizing random
+noise. Since mathematical models of biological systems can not describe their
+characteristics perfect and error-free, it is assumed that the latter type of
+noise is more realistic. But unfortunately this kind of noise increases the
+difficulty of time series prediction, even for simple mathematical functions, 
+as seen in section~\ref{sec:sine}.
+
 The remaining report is structured as follows. First, we perform proper time 
 series prediction on the $sine$ function and show how different noise models
 impact the prediction ability of our network models. We conduct an evaluation
@@ -32,10 +60,16 @@ previous results.
 
 \section{Methods}
 
+% noise
+% software
+We perform 
+
 \section{Evaluation}
 \subsection{Time series prediction of continuous functions}
+\label{sec:sine}
 
 \subsection{Time series prediction of ODEs}
+% todo: advanced feature preparation
  
 \subsection{Mackey Glass time series prediction}
 
