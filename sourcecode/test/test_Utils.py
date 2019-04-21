@@ -1,9 +1,45 @@
 import numpy as np
 import unittest
 
+from src.utils import generate_sequences
 from src.utils import train_val_split
 
 class TestUtils(unittest.TestCase):
+
+    def test_generate_sequences(self):
+        N = 2
+        data = np.zeros(N)
+
+        patterns, labels = generate_sequences(data, in_seq_len = 1, out_seq_len = 1)
+        self.assertEquals(patterns.shape[0], 1)
+        self.assertEquals(labels.shape[0], 1)
+
+        N = 3
+        data = np.zeros(N)
+
+        patterns, labels = generate_sequences(data, in_seq_len = 1, out_seq_len = 1)
+        self.assertEquals(patterns.shape[0], 2)
+        self.assertEquals(labels.shape[0], 2)
+
+        N = 4
+        data = np.zeros(N)
+
+        patterns, labels = generate_sequences(data, in_seq_len = 1, out_seq_len = 1)
+        self.assertEquals(patterns.shape[0], 3)
+        self.assertEquals(labels.shape[0], 3)
+
+        data = np.zeros(N)
+
+        patterns, labels = generate_sequences(data, in_seq_len = 2, out_seq_len = 1)
+        self.assertEquals(patterns.shape[0], 2)
+        self.assertEquals(labels.shape[0], 2)
+
+        data = np.zeros(N)
+
+        patterns, labels = generate_sequences(data, in_seq_len = 1, out_seq_len = 2)
+        self.assertEquals(patterns.shape[0], 2)
+        self.assertEquals(labels.shape[0], 2)
+
 
     def test_train_val_split(self):
         N = 100

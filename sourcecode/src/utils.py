@@ -2,18 +2,27 @@ import numpy as np
 
 
 def generate_sequences(data, in_seq_len, out_seq_len, axis=0):
+    """
+        Generates sequence patterns for supervised learning along a single axis
+        of a multi-dimensional tensor.
+
+        The values along the selected axis are treated as a series of values, 
+        which is cutted into overlapping sequence sections.
+    """
     patterns = []
     labels = []
 
     N = data.shape[axis]
+    print(N)
     full_seq_len = in_seq_len + out_seq_len
     # first part usable, possible to extract sequences here
-    usable_seq_len = N - in_seq_len - out_seq_len
-    for i in range(usable_seq_len // full_seq_len):
-        patterns.append(np.take(data, range(full_seq_len * i,
-                                            full_seq_len * i + in_seq_len), axis))
-        labels.append(np.take(data, range(full_seq_len * i +
-                                          in_seq_len, full_seq_len * (i+1)), axis))
+    usable_seq_len = N - full_seq_len + 1
+    print(usable_seq_len)
+    for i in range(usable_seq_len):
+        patterns.append(np.take(data, range(i,
+                                            i + in_seq_len), axis))
+        labels.append(np.take(data, range(i + in_seq_len,
+                                          i + full_seq_len), axis))
 
     return np.array(patterns), np.array(labels)
 
