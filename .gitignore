@@ -6,3 +6,6 @@
 *.synctex.gz
 *.bbl
 *.blg
+
+# python trash files
+*.pyc
