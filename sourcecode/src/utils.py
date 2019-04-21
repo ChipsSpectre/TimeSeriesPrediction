@@ -13,11 +13,11 @@ def generate_sequences(data, in_seq_len, out_seq_len, axis=0):
     labels = []
 
     N = data.shape[axis]
-    print(N)
+
     full_seq_len = in_seq_len + out_seq_len
     # first part usable, possible to extract sequences here
     usable_seq_len = N - full_seq_len + 1
-    print(usable_seq_len)
+
     for i in range(usable_seq_len):
         patterns.append(np.take(data, range(i,
                                             i + in_seq_len), axis))

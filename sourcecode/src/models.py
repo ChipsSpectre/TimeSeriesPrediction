@@ -24,9 +24,9 @@ class TwoLayerNet(Model):
     def predict(self, x):
         return self.net.predict(x)
 
-    def train(self, x_train, y_train, x_val, y_val):
+    def train(self, x_train, y_train, x_val, y_val, epochs):
         return self.net.fit(x_train, y_train, validation_data=(x_val, y_val),
-            batch_size = 1)
+            batch_size = 128, epochs=epochs)
 
     def compile(self, optimizer, loss):
         return self.net.compile(optimizer, loss)
