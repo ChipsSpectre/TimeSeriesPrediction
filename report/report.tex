@@ -36,10 +36,33 @@ previous results.
 \subsection{Time series prediction of continuous functions}
 
 \subsection{Time series prediction of ODEs}
+ 
+\subsection{Mackey Glass time series prediction}
 
-\subsection{Chaotic time series prediction}
+In order to model diseases related to dynamic respiratory and hematopoietic 
+diseases, Mackey \textit{et al.} proposed the mackey-glass equations, a kind of 
+first-order nonlinear differential delay equations \cite{mackey1977}. If the 
+delayed time ($x_{\tau} = x(t - \tau)$) exceeds the delay $\tau > 16.8$, then 
+equation \ref{equ:mackey} behaves chaotic \cite{farmer1982}.
+
+\begin{equation}
+  \frac{dx}{dt} = \beta \cdot \frac{x_{\tau}}{1 + x_{\tau}^n}
+  \label{equ:mackey}
+\end{equation}
+
+The first approach to predict the short-time behavior of chaotic time series
+was done by Farmer \textit{et al.} who proposed a \texttt{local approximation}
+technique \cite{farmer1987}. After improval of predictions using support vector
+machines by Müller \textit{et al.} \cite{muller1997}, the focus in research
+shifted towards artifical neural networks which enable even better predictions.
+Two of the latest developments are the usage of Wavelet Networks
+\cite{alexandridis2013} and particle swarm optimization \cite{caraballo2016}.
+
 
 \subsection{SDE time series prediction}
     
 \section{Conclusion}
+
+\bibliographystyle{plain}
+\bibliography{report}
 \end{document} 
