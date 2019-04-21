@@ -3,7 +3,7 @@ import numpy as np
 
 from data_generator import DataGenerator
 from models import TwoLayerNet
-from noise import iid_normal_noise
+from noise import iid_normal_noise, memory_normal_noise
 from plotting import plot_prediction, plot_trainval_loss
 from utils import generate_sequences, train_val_split
 
@@ -19,9 +19,10 @@ if __name__ == "__main__":
     epochs = 100
 
     data_points = DataGenerator.generate_sine(N=1000, start=0, end=4 * np.pi)
-    data_points = data_points + iid_normal_noise(data_points) * sigma
+    # data_points = data_points + iid_normal_noise(data_points) * sigma
+    data_points = data_points + memory_normal_noise(data_points, sigma)
 
-    train_data, val_data = train_val_split(data_points, val_fraction=0.2)
+    train_data, val_data = train_val_split(data_points, val_fraction=0.5)
     train_x, train_y = generate_sequences(train_data, in_seq_len, out_seq_len)
     val_x, val_y = generate_sequences(val_data, in_seq_len, out_seq_len)
 
