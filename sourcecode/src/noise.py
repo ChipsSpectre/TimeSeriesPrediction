@@ -29,8 +29,9 @@ def memory_normal_noise(data, sigma = 1):
     """
     N = len(data)
     values = []
-    prev = np.random.standard_normal(1) * sigma
+    prev = float(np.random.standard_normal(1) * sigma)
     for _ in range(N):
         values.append(prev)
-        prev += np.random.standard_normal(1) * sigma
-    return np.array(values)[:, 0]
+        prev += float(np.random.standard_normal(1) * sigma)
+
+    return np.array(values)

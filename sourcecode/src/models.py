@@ -1,5 +1,5 @@
 
-from keras.layers import Dense, LSTM
+from keras.layers import Dense, LSTM, Conv1D, Flatten
 from keras.models import Sequential, Model
 
 """
@@ -7,6 +7,7 @@ from keras.models import Sequential, Model
 
     All models here are intended for time series prediction.
 """
+
 
 class TwoLayerNet(Model):
     """
@@ -18,18 +19,20 @@ class TwoLayerNet(Model):
     def __init__(self, n_input, n_hidden, n_output):
         super(TwoLayerNet, self).__init__()
         self.net = Sequential()
-        self.net.add(Dense(n_hidden, input_shape = (n_input,), activation="relu"))
-        self.net.add(Dense(n_output, activation = None))
-        
+        self.net.add(Dense(n_hidden, input_shape=(
+            n_input,), activation="relu"))
+        self.net.add(Dense(n_output, activation=None))
+
     def predict(self, x):
         return self.net.predict(x)
 
     def train(self, x_train, y_train, x_val, y_val, epochs):
         return self.net.fit(x_train, y_train, validation_data=(x_val, y_val),
-            batch_size = 128, epochs=epochs)
+                            batch_size=128, epochs=epochs)
 
     def compile(self, optimizer, loss):
         return self.net.compile(optimizer, loss)
+
 
 class LSTMPredictor(Model):
     """
@@ -37,18 +40,47 @@ class LSTMPredictor(Model):
 
         Uses only a single hidden LSTM layer.
     """
+
     def __init__(self, n_input, n_hidden, n_output):
         super(LSTMPredictor, self).__init__()
         self.net = Sequential()
         self.net.add(LSTM(n_hidden, return_sequences=False))
-        self.net.add(Dense(n_output, activation = None))
-        
+        self.net.add(Dense(n_output, activation=None))
+
     def predict(self, x):
         return self.net.predict(x)
 
     def train(self, x_train, y_train, x_val, y_val, epochs):
         return self.net.fit(x_train, y_train, validation_data=(x_val, y_val),
-            batch_size = 128, epochs=epochs)
+                            batch_size=128, epochs=epochs)
+
+    def compile(self, optimizer, loss):
+        return self.net.compile(optimizer, loss)
+
+
+class CNNPredictor(Model):
+    """
+        Implementation of a time series predictor based on convolutional layers
+        for feature extraction. The final regression is performed by a fully
+        connected layer.
+    """
+
+    def __init__(self, n_filters, n_output):
+        super(CNNPredictor, self).__init__()
+        self.net = Sequential()
+        self.net.add(Conv1D(filters=n_filters,
+                            activation="relu", kernel_size=3))
+        self.net.add(Conv1D(filters=n_filters,
+                            activation="relu", kernel_size=3))
+        self.net.add(Flatten()),
+        self.net.add(Dense(n_output, activation=None))
+
+    def predict(self, x):
+        return self.net.predict(x)
+
+    def train(self, x_train, y_train, x_val, y_val, epochs):
+        return self.net.fit(x_train, y_train, validation_data=(x_val, y_val),
+                            batch_size=128, epochs=epochs)
 
     def compile(self, optimizer, loss):
         return self.net.compile(optimizer, loss)
