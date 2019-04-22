@@ -85,6 +85,18 @@ until a high-level classification can be done. The large success in computer
 vision has inspired researchears in time series prediction to also apply
 \textbf{CNN}s \cite{cui2016, borovykh2017}, so we also evaluate this 
 architecture in our analysis.
+
+Last but not least, we analyse the \textbf{N}onlinear \textbf{A}uto\textbf{R}
+egressive models with e\textbf{X}ogenous input (\textbf{NARX}).
+These networks are a recurrent
+neural networks that relinquish of feedback from the hidden state and only use
+feedback from the output state. It has been shown by Siegelmann \textit{et al.}
+that even with the limited feedback \textbf{NARX} has computing capabilities of
+a Turing machine \cite{siegelmann1997} and is therefore a universal function
+approximator, too. This type of neural network was not only used for chaotic
+time series prediction \cite{diaconescu2008}, but also provides current 
+state of the art performance in time series prediction as a attention-based
+neural network \cite{qin2017}.
 % noise
 % software
 
@@ -122,6 +134,6 @@ Two of the latest developments are the usage of Wavelet Networks
     
 \section{Conclusion}
 
-\bibliographystyle{plain}
+\bibliographystyle{alpha}
 \bibliography{report}
 \end{document} 
