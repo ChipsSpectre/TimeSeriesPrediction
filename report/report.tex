@@ -97,6 +97,16 @@ approximator, too. This type of neural network was not only used for chaotic
 time series prediction \cite{diaconescu2008}, but also provides current 
 state of the art performance in time series prediction as a attention-based
 neural network \cite{qin2017}.
+
+All implementation is done using the \texttt{Python} programming language in
+version $3.6.7$. The time series data is created and loaded in the 
+\texttt{numpy} framework in version $1.16.1$. In order to train the neural
+networks both fast and elegant, we use the \texttt{keras} (version $2.2.4$)
+with the
+\texttt{tensorflow} backend in version $1.13.1$.
+The reason for this choice is the tight 
+integration between \texttt{keras} and \texttt{numpy} that simplifies and 
+increases the speed of our software development. 
 % noise
 % software
 
