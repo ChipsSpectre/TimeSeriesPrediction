@@ -60,13 +60,38 @@ previous results.
 
 \section{Methods}
 
+In our analysis, we use four different architectures and neural networks and
+optimize their hyperparameters for the respective use case. Since Hornik 
+\textit{et al.} have shown that feedforward neural networks are universal 
+function approximators \cite{hornik1989}, we evaluate this architecture with 
+varying number of hidden nodes. 
+
+After that, we investigate the strength of
+improvement of using a recurrent neural network. This type of neural network has
+already been applied to time series prediction \cite{connor1994}, but suffers
+from the vanishing gradient problem when capturing long-term dependencies in a 
+sequence. Because of that, we decide to evaluate only the Long Short-Term Memory
+(\textbf{LSTM})
+network architecture \cite{hochreiter1997}, which was successfully applied in 
+various time series prediction tasks like anomaly detection \cite{malhotra2015},
+stock price \cite{fischer2018} and protein disorder prediction 
+\cite{hanson2016}.
+
+In the last years, convolutional neural networks (\textbf{CNN}s) have improved
+the results in image classification \cite{krizhevsky2012} and other computer
+vision tasks. A \textbf{CNN} learns features from the data in a hierarchical
+way, for example combining pixels to edges, edges to more complex forms etc.
+until a high-level classification can be done. The large success in computer
+vision has inspired researchears in time series prediction to also apply
+\textbf{CNN}s \cite{cui2016, borovykh2017}, so we also evaluate this 
+architecture in our analysis.
 % noise
 % software
-We perform 
 
 \section{Evaluation}
-\subsection{Time series prediction of continuous functions}
+\subsection{Time series prediction of periodic functions}
 \label{sec:sine}
+
 
 \subsection{Time series prediction of ODEs}
 % todo: advanced feature preparation
