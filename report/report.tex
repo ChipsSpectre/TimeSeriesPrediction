@@ -1,4 +1,6 @@
 \documentclass{article}
+\usepackage{graphicx}
+\usepackage{subcaption}
 
 \title{Challenges in stochastic time series prediction}
 \author{Maximilian Hornung, Jens Settelmeier}
@@ -7,13 +9,13 @@
 \maketitle
 
 \begin{abstract}
-    Predicting the future development of time series is of interest in different
-    areas of computational biology. The time series in biological models exhibit
-    challenging characteristics such as chaotic or stochastic behavior. In this
-    report, time series prediction is done on different kind of biological time
-    series using deep neural networks. In our evaluation, we identify challenges
-    and limitations of this approach, and compare different architectures of
-    deep neural networks with regard to their performance.
+  Predicting the future development of time series is of interest in different
+  areas of computational biology. The time series in biological models exhibit
+  challenging characteristics such as chaotic or stochastic behavior. In this
+  report, time series prediction is done on different kind of biological time
+  series using deep neural networks. In our evaluation, we identify challenges
+  and limitations of this approach, and compare different architectures of
+  deep neural networks with regard to their performance.
 \end{abstract}
 
 \section{Introduction}
@@ -21,12 +23,12 @@
 In various kind of diseases, it is important to choose the correct treatment at
 the current time point. Since the human body is too complex to be described
 directly using mathematics, special features are modeled with mathematical
-systems such as the Mackey-Glass equations for respiratory and hematopoietic 
+systems such as the Mackey-Glass equations for respiratory and hematopoietic
 diseases \cite{mackey1977}. These models make use of available data about
 previous information in order to reduce the uncertainty under which a decision
 is done. This is especially important when the consequences of a decision are
 severe, for example the decision of breast cancer treatment after radiation.
-This particular problem can be addressed by using a stochastic differential 
+This particular problem can be addressed by using a stochastic differential
 equation, as done by Oroji \textit{et al} \cite{oroji2016}.
 
 In different kinds of biological models, chaotic behavior is observed. Even the
@@ -35,46 +37,46 @@ parameters, as shown by Fischer \cite{farmer1982}. That means that even small
 perturbations of the time series prediction increase exponentially, which means
 that the time series prediction should be as robust as possible against noise.
 
-This gets imporant in particular because another characterstic of dealing with 
-biological data is the presence of noise. In 
+This gets imporant in particular because another characterstic of dealing with
+biological data is the presence of noise. In
 this report, we show that different kinds of noise assumptions can impact the
 results of time series prediction. We evaluate all our investigated problems
 with regard to the popular $i.i.d.$ random noise as well as memorizing random
 noise. Since mathematical models of biological systems can not describe their
 characteristics perfect and error-free, it is assumed that the latter type of
 noise is more realistic. But unfortunately this kind of noise increases the
-difficulty of time series prediction, even for simple mathematical functions, 
+difficulty of time series prediction, even for simple mathematical functions,
 as seen in section~\ref{sec:sine}.
 
-The remaining report is structured as follows. First, we perform proper time 
+The remaining report is structured as follows. First, we perform proper time
 series prediction on the $sine$ function and show how different noise models
 impact the prediction ability of our network models. We conduct an evaluation
-how these results can be extended to the prediction of 
-ordinary differential equations (\textbf{ODE}s) at the example of the 
+how these results can be extended to the prediction of
+ordinary differential equations (\textbf{ODE}s) at the example of the
 differential equations of the harmonic oscillator. After that, we show how the
 stochasticity of noise impactss the possibility to predict deterministic
 chaotic time series at the example of the \emph{Mackey Glass} time series. Last
-but not least, we report how the poor results of numerical approximations on 
+but not least, we report how the poor results of numerical approximations on
 stocastic differential equations (\textbf{SDE}s) can be explained based on our
 previous results.
 
 \section{Methods}
 
 In our analysis, we use four different architectures and neural networks and
-optimize their hyperparameters for the respective use case. Since Hornik 
-\textit{et al.} have shown that feedforward neural networks are universal 
-function approximators \cite{hornik1989}, we evaluate this architecture with 
-varying number of hidden nodes. 
+optimize their hyperparameters for the respective use case. Since Hornik
+\textit{et al.} have shown that feedforward neural networks are universal
+function approximators \cite{hornik1989}, we evaluate this architecture with
+varying number of hidden nodes.
 
 After that, we investigate the strength of
 improvement of using a recurrent neural network. This type of neural network has
 already been applied to time series prediction \cite{connor1994}, but suffers
-from the vanishing gradient problem when capturing long-term dependencies in a 
+from the vanishing gradient problem when capturing long-term dependencies in a
 sequence. Because of that, we decide to evaluate only the Long Short-Term Memory
 (\textbf{LSTM})
-network architecture \cite{hochreiter1997}, which was successfully applied in 
+network architecture \cite{hochreiter1997}, which was successfully applied in
 various time series prediction tasks like anomaly detection \cite{malhotra2015},
-stock price \cite{fischer2018} and protein disorder prediction 
+stock price \cite{fischer2018} and protein disorder prediction
 \cite{hanson2016}.
 
 In the last years, convolutional neural networks (\textbf{CNN}s) have improved
@@ -83,7 +85,7 @@ vision tasks. A \textbf{CNN} learns features from the data in a hierarchical
 way, for example combining pixels to edges, edges to more complex forms etc.
 until a high-level classification can be done. The large success in computer
 vision has inspired researchears in time series prediction to also apply
-\textbf{CNN}s \cite{cui2016, borovykh2017}, so we also evaluate this 
+\textbf{CNN}s \cite{cui2016, borovykh2017}, so we also evaluate this
 architecture in our analysis.
 
 Last but not least, we analyse the \textbf{N}onlinear \textbf{A}uto\textbf{R}
@@ -94,36 +96,96 @@ feedback from the output state. It has been shown by Siegelmann \textit{et al.}
 that even with the limited feedback \textbf{NARX} has computing capabilities of
 a Turing machine \cite{siegelmann1997} and is therefore a universal function
 approximator, too. This type of neural network was not only used for chaotic
-time series prediction \cite{diaconescu2008}, but also provides current 
+time series prediction \cite{diaconescu2008}, but also provides current
 state of the art performance in time series prediction as a attention-based
-neural network \cite{qin2017}.
+neural network \cite{qin2017}. 
 
 All implementation is done using the \texttt{Python} programming language in
-version $3.6.7$. The time series data is created and loaded in the 
+version $3.6.7$. The time series data is created and loaded in the
 \texttt{numpy} framework in version $1.16.1$. In order to train the neural
 networks both fast and elegant, we use the \texttt{keras} (version $2.2.4$)
 with the
 \texttt{tensorflow} backend in version $1.13.1$.
-The reason for this choice is the tight 
-integration between \texttt{keras} and \texttt{numpy} that simplifies and 
-increases the speed of our software development. 
-% noise
-% software
+The reason for this choice is the tight
+integration between \texttt{keras} and \texttt{numpy} that simplifies and
+increases the speed of our software development. Before running the experiments,
+the random number generator of \texttt{numpy} is set to the seed $0$ to ensure
+reproducibility of our results.
 
-\section{Evaluation}
+\section{Evaluation} 
 \subsection{Time series prediction of periodic functions}
-\label{sec:sine}
+\label{sec:sine} 
+In the first part of the analysis, we analyze the capability of different neural
+network architectures to perform time series prediction on the periodic $sine$
+function. This task can be considered simple, because the different parts of the
+sine wave occur multiple times in the data. It is therefore interesting how
+robust the network architectures are with regard to different kinds of noise.
 
+In this section, we provide information about the last 10 time sequence points
+to the network and want to predict the next point.
+
+In Figure~\ref{fig:noise_impact}, we see that a densely connected neural network
+with one hidden layer of 10 nodes is capable of performing the time series
+prediction. Even if we apply $i.i.d.$ gaussian noise with standard
+deviation $\sigma = 0.1$, the
+network can still be trained to fit the data correctly. But if the noise is not
+applied independently in each timestep, the convergence takes more time steps as
+pointed out in Figure~\ref{fig:noise_loss_impact}.
+  
+\begin{figure}
+  \begin{subfigure}{.35\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/plot_twolayer_noiseless.pdf}
+  \end{subfigure} 
+  \hspace{-5mm}
+  \begin{subfigure}{.35\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/plot_twolayer_iidnoise.pdf}
+  \end{subfigure} 
+  \hspace{-5mm}
+  \begin{subfigure}{.35\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/plot_twolayer_memnoise.pdf}
+  \end{subfigure}
+  \caption{Impact of different kinds of noise on the time series prediction
+  using a feedforward neural network with one hidden layer. Number of hidden
+  units stays 10 in all simulations. Gaussian distributed noise with $\sigma = 
+  0.1$.}
+  \label{fig:noise_impact} 
+\end{figure}
+
+\begin{figure}
+  \center
+  \begin{subfigure}{.35\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/plot_twolayer_losscompare.pdf}
+  \end{subfigure} 
+  \hspace{-6mm}
+  \begin{subfigure}{.35\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/plot_lstm_losscompare.pdf}
+  \end{subfigure} 
+  \hspace{-6mm}
+  \begin{subfigure}{.35\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/plot_cnn_losscompare.pdf}
+  \end{subfigure}
+  \caption{MSE loss over the number of trained epochs on training and on 
+  validation dataset. On the left, the classical feedforward network was used.
+  The middle plot shows the performance of the LSTM and the right one plots the
+  loss values of the convolutional network.}
+  \label{fig:noise_loss_impact}
+\end{figure}
 
 \subsection{Time series prediction of ODEs}
 % todo: advanced feature preparation
- 
+
 \subsection{Mackey Glass time series prediction}
 
-In order to model diseases related to dynamic respiratory and hematopoietic 
-diseases, Mackey \textit{et al.} proposed the mackey-glass equations, a kind of 
-first-order nonlinear differential delay equations \cite{mackey1977}. If the 
-delayed time ($x_{\tau} = x(t - \tau)$) exceeds the delay $\tau > 16.8$, then 
+In order to model diseases related to dynamic respiratory and hematopoietic
+diseases, Mackey \textit{et al.} proposed the mackey-glass equations, a kind of
+first-order nonlinear differential delay equations \cite{mackey1977}. If the
+delayed time ($x_{\tau} = x(t - \tau)$) exceeds the delay $\tau > 16.8$, then
 equation \ref{equ:mackey} behaves chaotic \cite{farmer1982}.
 
 \begin{equation}
@@ -141,9 +203,9 @@ Two of the latest developments are the usage of Wavelet Networks
 
 
 \subsection{SDE time series prediction}
-    
+
 \section{Conclusion}
 
 \bibliographystyle{alpha}
 \bibliography{report}
-\end{document} 
+\end{document}
