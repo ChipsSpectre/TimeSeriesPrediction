@@ -130,7 +130,16 @@ prediction. Even if we apply $i.i.d.$ gaussian noise with standard
 deviation $\sigma = 0.1$, the
 network can still be trained to fit the data correctly. But if the noise is not
 applied independently in each timestep, the convergence takes more time steps as
-pointed out in Figure~\ref{fig:noise_loss_impact}.
+pointed out in Figure~\ref{fig:noise_loss_impact}. This effect is especially 
+strong for the \textbf{LSTM} architecture, where even 100 epochs are not enough
+for the validation loss to converge, compared to the other approaches that need
+only 20 epochs.
+
+Since the noise we apply on the data has a standard deviation $\sigma = 0.1$,
+it is obvious that a perfect time series prediction is not be possible. We 
+expect that the minimum possible validation loss is as high as the variance 
+($\sigma^2$), and can reproduce that in all neural network architectures as
+shown in Table~\ref{tab:noise_finals}.
   
 \begin{figure}
   \begin{subfigure}{.35\textwidth}
