@@ -33,7 +33,7 @@ class Tyson2StateOscillator(gillespy.Model):
         a0 = gillespy.Parameter(name='a0', expression=0.005)
         a1 = gillespy.Parameter(name='a1', expression=0.05)
         a2 = gillespy.Parameter(name='a2', expression=0.1)
-        kdx = gillespy.Parameter(name='kdx', expression=0.9) # expression=1.0)
+        kdx = gillespy.Parameter(name='kdx', expression=1.0)
         self.add_parameter([P, kt, kd, a0, a1, a2, kdx])
 
         # Species

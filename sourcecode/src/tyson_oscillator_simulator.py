@@ -5,7 +5,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import sys
-print(sys.path)
 sys.path[:0] = ['..']
 
 if __name__ == '__main__':
@@ -17,7 +16,7 @@ if __name__ == '__main__':
     # =============================================
     # To set up the model, first create an empty model object. Then, add
     # species and parameters as was set up above.
-    tyson_trajectories = tyson_model.run(show_labels=False)
+    tyson_trajectories = tyson_model.run(show_labels=False, seed=0)
     print(tyson_trajectories[0], tyson_trajectories[0].shape)
     print("finished running.")
 
