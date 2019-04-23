@@ -2,8 +2,8 @@
 \usepackage{graphicx}
 \usepackage{subcaption}
 
-\title{Challenges in stochastic time series prediction}
-\author{Maximilian Hornung, Jens Settelmeier}
+\title{Challenges in chaotic time series forecasting}
+\author{Maximilian Hornung}
 
 \begin{document}
 \maketitle
@@ -113,7 +113,7 @@ the random number generator of \texttt{numpy} is set to the seed $0$ to ensure
 reproducibility of our results.
 
 \section{Evaluation} 
-\subsection{Time series prediction of periodic functions}
+\subsection{Time series forecasting of periodic functions}
 \label{sec:sine} 
 In the first part of the analysis, we analyze the capability of different neural
 network architectures to perform time series prediction on the periodic $sine$
@@ -139,7 +139,7 @@ Since the noise we apply on the data has a standard deviation $\sigma = 0.1$,
 it is obvious that a perfect time series prediction is not be possible. We 
 expect that the minimum possible validation loss is as high as the variance 
 ($\sigma^2$), and can reproduce that in all neural network architectures as
-shown in Table~\ref{tab:noise_finals}.
+shown in Table ??.%~\ref{tab:noise_finals}.
   
 \begin{figure}
   \begin{subfigure}{.35\textwidth}
@@ -186,14 +186,13 @@ shown in Table~\ref{tab:noise_finals}.
   \label{fig:noise_loss_impact}
 \end{figure}
 
-\subsection{Time series prediction of ODEs}
 % todo: advanced feature preparation
-
 \subsection{Mackey Glass time series prediction}
 
 In order to model diseases related to dynamic respiratory and hematopoietic
 diseases, Mackey \textit{et al.} proposed the mackey-glass equations, a kind of
-first-order nonlinear differential delay equations \cite{mackey1977}. If the
+first-order nonlinear differential delay equations to model 
+the number of white blood cells over time \cite{mackey1977}. If the
 delayed time ($x_{\tau} = x(t - \tau)$) exceeds the delay $\tau > 16.8$, then
 equation \ref{equ:mackey} behaves chaotic \cite{farmer1982}.
 
@@ -210,8 +209,61 @@ shifted towards artifical neural networks which enable even better predictions.
 Two of the latest developments are the usage of Wavelet Networks
 \cite{alexandridis2013} and particle swarm optimization \cite{caraballo2016}.
 
+The solution to the Mackey Glass equation is discretized using the Euler method,
+as given in Equation~\ref{equ:mackey_euler}. using this discretisation we can
+see the chaotic nature of the solution by comparing the time series evolution 
+in
+Figure~\ref{fig:mackey_chaos}. It can be seen clearly that the chaotic behavior
+of the system gets stronger when the time delay is increased.
 
-\subsection{SDE time series prediction}
+\begin{equation}
+  x(t+1) = x(t) + \frac{\beta x(t - \tau)}{1 + x^{n}(t - \tau)} - \gamma x(t)
+  \label{equ:mackey_euler}
+\end{equation}
+
+\begin{figure}
+  \centering
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/mg_chaos_17.pdf}
+  \end{subfigure} 
+  \hspace{-6mm}
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{figures/mg_chaos_25.pdf}
+  \end{subfigure}
+  \caption{Influence of time delay parameter $\tau$ on the chaotic behavior of
+    the Mackey Glass equation. The left side of the figure uses $\tau = 17$,
+    the right side $\tau = 25$.}
+  \label{fig:mackey_chaos}
+\end{figure}
+
+In accordance with the approach used by Caraballo \textit{et al.}
+\cite{caraballo2016}, we predict $x(t+6)$ based on the information of the time 
+series points in $x(t)$, $x(t-6)$, $x(t-12)$, and $x(t-18)$. We investigate how
+an increase in chaotic behavior impacts the prediction capability of the
+different neural network architectures. The results for the feedforward neural
+network are depicted in Figure~\ref{fig:mackey_cnn}. For this plot, a 2-layer 
+CNN architecture was used, incoroporating "same" padding and a kernel size of 3.
+The first 3000 time points of the time series are used for training, the 1000 
+following points for validation.
+
+It can be seen that for non-chaotic solutions of the macke-glass time series the
+model is able to predict precisely, and that for values of $\tau > 20$ the 
+chaotic behavior is strong enough to impact the prediction. We explain the low
+error for $\tau = 21$ in the ability of the network to compensate for the amount
+of chaos up to this point.
+ 
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\textwidth]{figures/mackey_glass_cnn.pdf}
+  \label{fig:mackey_cnn}
+  \caption{Validation error of the convolutional neural network for different 
+  time delay values $\tau$ of the Mackey Glass equation. The error increases 
+  strongly for values of $\tau > 20$, indicating a strong chaotic behavior 
+  from this point.}
+\end{figure}
+
 
 \section{Conclusion}
 
