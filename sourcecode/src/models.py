@@ -26,9 +26,9 @@ class TwoLayerNet(Model):
     def predict(self, x):
         return self.net.predict(x)
 
-    def train(self, x_train, y_train, x_val, y_val, epochs):
+    def train(self, x_train, y_train, x_val, y_val, epochs, verbose=1):
         return self.net.fit(x_train, y_train, validation_data=(x_val, y_val),
-                            batch_size=128, epochs=epochs)
+                            batch_size=128, epochs=epochs, verbose=verbose)
 
     def compile(self, optimizer, loss):
         return self.net.compile(optimizer, loss)
@@ -50,9 +50,9 @@ class LSTMPredictor(Model):
     def predict(self, x):
         return self.net.predict(x)
 
-    def train(self, x_train, y_train, x_val, y_val, epochs):
+    def train(self, x_train, y_train, x_val, y_val, epochs, verbose=1):
         return self.net.fit(x_train, y_train, validation_data=(x_val, y_val),
-                            batch_size=128, epochs=epochs)
+                            batch_size=128, epochs=epochs, verbose=verbose)
 
     def compile(self, optimizer, loss):
         return self.net.compile(optimizer, loss)
@@ -69,18 +69,18 @@ class CNNPredictor(Model):
         super(CNNPredictor, self).__init__()
         self.net = Sequential()
         self.net.add(Conv1D(filters=n_filters,
-                            activation="relu", kernel_size=3))
+                            activation="relu", kernel_size=3, padding="same"))
         self.net.add(Conv1D(filters=n_filters,
-                            activation="relu", kernel_size=3))
+                            activation="relu", kernel_size=3, padding="same"))
         self.net.add(Flatten()),
         self.net.add(Dense(n_output, activation=None))
 
     def predict(self, x):
         return self.net.predict(x)
 
-    def train(self, x_train, y_train, x_val, y_val, epochs):
+    def train(self, x_train, y_train, x_val, y_val, epochs, verbose=1):
         return self.net.fit(x_train, y_train, validation_data=(x_val, y_val),
-                            batch_size=128, epochs=epochs)
+                            batch_size=128, epochs=epochs, verbose=verbose)
 
     def compile(self, optimizer, loss):
         return self.net.compile(optimizer, loss)

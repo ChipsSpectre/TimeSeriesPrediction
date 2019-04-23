@@ -16,3 +16,36 @@ class DataGenerator:
         x = np.linspace(start, end, N)
         return np.sin(x)
 
+
+    @staticmethod
+    def generate_mg_euler(N, start_value, beta, gamma, n, tau):
+        """
+            Uses euler discretisation to generate solution to the mackey
+            glass equations.
+        """
+        x = np.zeros(N + tau) + start_value
+        for t in range(tau, N + tau):
+            x[t] = x[t - 1] + (beta * x[t - tau]) / (1 + np.power(x[t - tau], n)) - gamma * x[t - 1]
+
+        return x
+    
+    @staticmethod
+    def generate_macke_glass_training_data(data):
+        """
+        Creates the mackey glass data as specified in carabello16.
+
+        The offset relates to the data that should be learned (the target), i.e. how
+        far the prediction should look into the future.
+
+        :param data:
+        :param offset:
+        :return:
+        """
+        x = []
+        y = []
+        offset = 6
+        for i in range(18, data.shape[0] - offset):
+            x.append(np.array([data[i], data[i - 6], data[i - 12], data[i - 18]]))
+            y.append(np.array([data[i + offset]]))
+
+        return np.array(x), np.array(y)
