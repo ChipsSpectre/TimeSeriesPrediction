@@ -277,7 +277,63 @@ Recently, Strömstedt \textit{et al} analyzed the capability of neural network
 architectures to model stochastic time series \cite{stroemstedt2018} at the 
 example of time series produced according to the characteristics of Novak 
 \textit{et al} \cite{novak2008}. In this section, we reproduce their results for
-the LSTM architecture and show how to improve their results.
+the LSTM architecture and state fundamental limits for neural networks to 
+approximate stochastic time series.
+
+
+The time series data is generated using \texttt{gillespy} \cite{abel2016}.
+Using this framework, a simple stochastic reaction system with 2 states is 
+set up. One protein $X$ is produced more the less of the other protein $Y$
+exists. $X$ and $Y$ are both continuously reduced but $Y$ gets reduced stronger
+for smaller values of $Y$. A set of 7 parameters is used to parametrize the 
+system.
+
+The goal here is to train a LSTM based 
+model to convert a set of input parameters into a time series. The first 
+LSTM layer
+takes 7 input values and transforms them into $n$ sequences of 7 values, with 
+$n$ being the desired length of the output sequence. The second LSTM layer 
+takes this result and converts it to a sequence of length $n$. 
+
+The analysis of the resulting time series as depicted in 
+Figure~\ref{fig:nn_limitation} shows the general limitation of using a
+deterministic neural network for predicting a stochastic time series. For one 
+possible of parameters for the biological oscillator, the analytical solution 
+was computed under $100$ (stochastic) trajectories. After that, the network was 
+trained to predict the time series based on the (unchanged) parameters. We see 
+that the short-term predictions are accurate and have the same magnitude as the
+ground truth signal -- but the more time steps are simulated, the larger is the
+difference between the ground truth trajectories due to stochasticity. Because
+of that, the neural network predicts the mean of the signals and the amplitude
+decreases. It should be noted that the trends in the time series are still 
+recognized, just with a smaller amplitude.
+
+\begin{table}
+  \centering
+  \begin{tabular}{cc}
+    Processor & Intel(R) Core i5-7200U CPU @ 2.50GHz \\
+    RAM & 7859 MB \\
+  \end{tabular}
+  \caption{Hardware configuration used in experiments.}
+\end{table}
+
+The motivation for using neural netowrks to generate time series is the 
+computational expensiveness of analytical solutions like the Gillespie 
+algorithm \cite{gillespie1977}. On experiments on our hardware 
+(see Table~\ref{tab:hardware} for details) 
+we need more than 6 seconds to simulate the biological oscillator with two
+states. This makes grid search approaches on the large number of parameter 
+combinations intractable. Using the 2-layer LSTM approach, predictions for 
+short time series can be done in less than $0.2$ seconds on our hardware.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{figures/nn_limitation.pdf}
+  \caption{Prediction of stochastic time series using deterministic 
+  \textbf{LSTM} network. Sampled ground truth data are unseen for the network.
+  Mean computed on all stochastic trajectories.}
+  \label{fig:nn_limitation}
+\end{figure}
 
 \section{Conclusion}
 
