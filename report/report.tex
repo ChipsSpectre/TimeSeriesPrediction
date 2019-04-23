@@ -187,7 +187,7 @@ shown in Table ??.%~\ref{tab:noise_finals}.
 \end{figure}
 
 % todo: advanced feature preparation
-\subsection{Mackey Glass time series prediction}
+\subsection{Mackey Glass time series forecasting}
 
 In order to model diseases related to dynamic respiratory and hematopoietic
 diseases, Mackey \textit{et al.} proposed the mackey-glass equations, a kind of
@@ -264,6 +264,20 @@ of chaos up to this point.
   from this point.}
 \end{figure}
 
+\subsection{Biological oscillator time series forecasting}
+
+The next section deals with time series forecasting of biological oscillators, 
+as described by Novak \textit{et al} \cite{novak2008}. For different aspects of
+cell physiology, e.g. the DNA synthesis, this kind of oscillators can be 
+observed. Novak \textit{et al} show that oscillations in simple ODEs can be 
+produced by incorporating an explicit time delay \cite{novak2008}, similar to 
+the Mackey Glass equations \cite{mackey1977}.
+
+Recently, Strömstedt \textit{et al} analyzed the capability of neural network
+architectures to model stochastic time series \cite{stroemstedt2018} at the 
+example of time series produced according to the characteristics of Novak 
+\textit{et al} \cite{novak2008}. In this section, we reproduce their results for
+the LSTM architecture and show how to improve their results.
 
 \section{Conclusion}
 
