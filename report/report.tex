@@ -264,6 +264,31 @@ of chaos up to this point.
   from this point.}
 \end{figure}
 
+In the next step, we compare our feedforward neural network and our LSTM 
+architecture with the results stated by Caraballo \textit{et al.} 
+\cite{caraballo2016} in Table~\ref{tab:mackey_results}. The results are based 
+on the root mean squared error (RMSE), computed in Equation~\ref{equ:rmse}.
+
+\begin{equation}
+  RMSE = \sqrt{\frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{n}}
+  \label{equ:rmse}
+\end{equation}
+
+\begin{table}
+  \centering
+  \begin{tabular}{c|c}
+    Method &  $RMSE_{x(t+6)}$ \\
+    \hline
+    Linear model & 0.5503 \\
+    Cascade correclation NN & 0.0624 \\
+    RBFNN & 0.0114 \\
+    ANN + PSO \cite{caraballo2016} & 0.0053 \\
+  \end{tabular}
+  \caption{Mackey Glass time series forecasting results using different neural
+  network architectures.}
+  \label{tab:mackey_results}
+\end{table}
+
 \subsection{Biological oscillator time series forecasting}
 
 The next section deals with time series forecasting of biological oscillators, 
@@ -315,6 +340,7 @@ recognized, just with a smaller amplitude.
     RAM & 7859 MB \\
   \end{tabular}
   \caption{Hardware configuration used in experiments.}
+  \label{tab:hardware}
 \end{table}
 
 The motivation for using neural netowrks to generate time series is the 
