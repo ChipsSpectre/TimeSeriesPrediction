@@ -4,7 +4,7 @@ import os
 import tqdm
 
 from data_generator import DataGenerator
-from models import CNNPredictor
+from models import LSTMPredictor
 
 """
     Implements time series prediction of the mackey glasst time series using
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     epochs = 100
     figure_path = os.path.join("..", "report", "figures")
 
-    net = CNNPredictor(n_filters=10, n_output=out_seq_len)
+    net = LSTMPredictor(n_input=in_seq_len, n_hidden=10, n_output=out_seq_len)
     net.compile("adam", "mse")
 
     res_chaos = []
@@ -32,9 +32,9 @@ if __name__ == "__main__":
         train, val, test = data_points[:3000], data_points[3000:4000], \
             data_points[4000:]
         train_x, train_y = DataGenerator \
-                .generate_macke_glass_training_data(data = train)
+            .generate_macke_glass_training_data(data=train)
         val_x, val_y = DataGenerator \
-                .generate_macke_glass_training_data(data = val)
+            .generate_macke_glass_training_data(data=val)
 
         # prepare shape for CNN predictor
         train_x = train_x.reshape(*train_x.shape, 1)
@@ -49,7 +49,7 @@ if __name__ == "__main__":
         res_chaos.append(history.history["val_loss"][-1])
         print(res_chaos[-1])
         print(np.array(res_chaos))
-    
+
     fig, ax = plt.subplots()
     ax.set_xticks(taus)
     plt.plot(np.array(taus), np.array(res_chaos))
@@ -59,4 +59,3 @@ if __name__ == "__main__":
     plt.savefig(os.path.join(figure_path, "mackey_glass_cnn.pdf"))
     plt.show()
     print(res_chaos)
-
