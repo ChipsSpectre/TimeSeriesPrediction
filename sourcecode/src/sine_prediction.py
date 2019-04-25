@@ -23,7 +23,7 @@ def run_twolayer(out_file, title):
     train_x, train_y = generate_sequences(train_data, in_seq_len, out_seq_len)
     val_x, val_y = generate_sequences(val_data, in_seq_len, out_seq_len)
 
-    history = net.train(train_x, train_y, val_x, val_y, epochs=epochs)
+    history = net.train(train_x, train_y, val_x, val_y, epochs=epochs, verbose=0)
 
     train_prediction = net.predict(train_x)
     val_prediction = net.predict(val_x)
@@ -46,7 +46,7 @@ def run_lstm(out_file, title):
     train_x = train_x.reshape(*train_x.shape, 1)
     val_x = val_x.reshape(*val_x.shape, 1)
 
-    history = net.train(train_x, train_y, val_x, val_y, epochs=epochs)
+    history = net.train(train_x, train_y, val_x, val_y, epochs=epochs, verbose=0)
 
     train_prediction = net.predict(train_x)
     val_prediction = net.predict(val_x)
@@ -68,7 +68,7 @@ def run_cnn(out_file, title):
     train_x = train_x.reshape(*train_x.shape, 1)
     val_x = val_x.reshape(*val_x.shape, 1)
 
-    history = net.train(train_x, train_y, val_x, val_y, epochs=epochs)
+    history = net.train(train_x, train_y, val_x, val_y, epochs=epochs, verbose=0)
 
     train_prediction = net.predict(train_x)
     val_prediction = net.predict(val_x)
@@ -96,8 +96,9 @@ if __name__ == "__main__":
 
     # twolayer predictions
     data_points = np.copy(original_data)
-    run_twolayer(out_file=os.path.join(figure_path, "plot_twolayer_noiseless.pdf"),
-                 title="Sinus prediction without noise")
+    history_noisefree = run_twolayer(out_file=os.path.join(figure_path,
+                                                           "plot_twolayer_noiseless.pdf"),
+                                     title="Sinus prediction without noise")
 
     data_points = np.copy(original_data) + original_iidnoise
     history_iid = run_twolayer(out_file=os.path.join(figure_path,
@@ -112,6 +113,10 @@ if __name__ == "__main__":
     plot_loss_comparison(history_iid, history_mem,
                          out_file=os.path.join(figure_path,
                                                "plot_twolayer_losscompare.pdf"))
+    print("MLP & {:0.4f} & {:0.4f} & {:0.4f} \\\\".format(history_noisefree.history["val_loss"][-1],
+        history_iid.history["val_loss"][-1],
+        history_mem.history["val_loss"][-1],
+        ))
 
     # lstm predictions
     data_points = np.copy(original_data)
@@ -126,6 +131,10 @@ if __name__ == "__main__":
     data_points = np.copy(original_data) + original_memnoise
     history_mem = run_lstm(out_file=os.path.join(figure_path, "plot_lstm_memnoise.pdf"),
                            title="Sinus prediction with memorizing noise")
+    print("LSTM & {:0.4f} & {:0.4f} & {:0.4f} \\\\".format(history_noisefree.history["val_loss"][-1],
+        history_iid.history["val_loss"][-1],
+        history_mem.history["val_loss"][-1],
+        ))
 
     plot_loss_comparison(history_iid, history_mem,
                          out_file=os.path.join(figure_path,
@@ -143,6 +152,10 @@ if __name__ == "__main__":
     data_points = np.copy(original_data) + original_memnoise
     history_mem = run_cnn(out_file=os.path.join(figure_path, "plot_cnn_memnoise.pdf"),
                           title="Sinus prediction with memorizing noise")
+    print("CNN & {:0.4f} & {:0.4f} & {:0.4f} \\\\".format(history_noisefree.history["val_loss"][-1],
+        history_iid.history["val_loss"][-1],
+        history_mem.history["val_loss"][-1],
+        ))
 
     plot_loss_comparison(history_iid, history_mem,
                          out_file=os.path.join(figure_path,

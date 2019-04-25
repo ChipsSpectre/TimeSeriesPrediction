@@ -1,4 +1,5 @@
 \documentclass{article}
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{subcaption}
 
@@ -6,7 +7,7 @@
 \author{Maximilian Hornung}
 
 \begin{document}
-\maketitle
+\maketitle 
 
 \begin{abstract}
   Predicting the future development of time series is of interest in different
@@ -31,22 +32,24 @@ severe, for example the decision of breast cancer treatment after radiation.
 This particular problem can be addressed by using a stochastic differential
 equation, as done by Oroji \textit{et al} \cite{oroji2016}.
 
-In different kinds of biological models, chaotic behavior is observed. Even the
-Mackey-Glass equations obtain chaotic behavior for certain choices of their
+In different kinds of biological models, chaotic behavior is observed. The
+Mackey-Glass equations possess chaotic behavior for certain choices of their
 parameters, as shown by Fischer \cite{farmer1982}. That means that even small
-perturbations of the time series prediction increase exponentially, which means
+measurement errors of the initial state lead to exponentially increasing
+errors of the time series prediction. Because of that, it is important
 that the time series prediction should be as robust as possible against noise.
 
 This gets imporant in particular because another characterstic of dealing with
 biological data is the presence of noise. In
 this report, we show that different kinds of noise assumptions can impact the
 results of time series prediction. We evaluate all our investigated problems
-with regard to the popular $i.i.d.$ random noise as well as memorizing random
+with regard to the popular $i.i.d.$ random noise as well as noise from a 
+discretized Wiener process, i.e. memorizing random
 noise. Since mathematical models of biological systems can not describe their
 characteristics perfect and error-free, it is assumed that the latter type of
 noise is more realistic. But unfortunately this kind of noise increases the
 difficulty of time series prediction, even for simple mathematical functions,
-as seen in section~\ref{sec:sine}.
+as seen in Section~\ref{sec:sine}.
 
 The remaining report is structured as follows. First, we perform proper time
 series prediction on the sinus function and show how different noise models
@@ -84,7 +87,10 @@ way, for example combining pixels to edges, edges to more complex forms etc.
 until a high-level classification can be done. The large success in computer
 vision has inspired researchears in time series prediction to also apply
 \textbf{CNN}s \cite{cui2016, borovykh2017}, so we also evaluate this
-architecture in our analysis.
+architecture in our analysis. The same way as images are composed of 
+hierarchical features (e.g. a face consisting of eyes, that consist of 
+certain edges etc.) we assume that similar hierarchies of features can be found
+in time series data.
 
 All implementation is done using the \texttt{Python} programming language in
 version $3.6.7$. The time series data is created and loaded in the
@@ -118,6 +124,23 @@ $F(x(t), x(t-1), \cdots, x(t-9))$ that is computed using a neural network.
   \label{equ:sine}
 \end{equation}
 
+We consider two different types of noise. First, we consider $i.i.d.$ gaussian 
+noise which is added to the underlying function $f(t)$
+as seen in Equation~\ref{equ:iid_noise}. The other type of noise is a 
+discretized Wiener process, i.e. a memorizing type of noise that is shown in 
+Equation~\ref{equ:wiener}.
+For more details about Wiener processes, refer to Schilling 
+\textit{et al} \cite{schilling2014}
+
+\begin{equation}
+  \forall t: \quad x(t) = f(t) + y, \quad y \sim \mathcal{N}(0, \sigma^2)
+  \label{equ:iid_noise}
+\end{equation}
+
+\begin{equation}
+  \forall t: x(t) = f(t) + y(t), \quad y(t) = y(t-1) + y \sim \mathcal{N}(0, \sigma^2), \quad y(0) = 0
+  \label{equ:wiener}
+\end{equation}
 In Figure~\ref{fig:noise_impact}, we see that a densely connected neural network
 with one hidden layer of 10 nodes is capable of performing the time series
 prediction. Even if we apply $i.i.d.$ gaussian noise with standard
@@ -133,7 +156,29 @@ Since the noise we apply on the data has a standard deviation $\sigma = 0.1$,
 it is obvious that a perfect time series prediction is not be possible. We 
 expect that the minimum possible validation loss is as high as the variance 
 ($\sigma^2$), and can reproduce that in all neural network architectures as
-shown in Table ??.%~\ref{tab:noise_finals}.
+shown in Table~\ref{tab:noise_finals}. The validation loss of a perfect
+neural network would therefore be $\sigma^2 = 0.01$, which is achieved by all 
+architectures for $i.i.d.$ noise. Only the LSTM architecture has worse
+performance for the memorizing noise. We assume that this is due to the slower 
+learning of that architecture compared to the others when confronted with
+memorizing noise. One possible reason for this observation is that the LSTM is
+trying to capture temporal dependencies between points in the time series, which
+is confused by the temporal dependencies induced by the memorizing noise.
+
+\begin{table}
+  \centering
+  \begin{tabular}{l|c|c|c}
+    Architecture & Noisefree data & $i.i.d.$ noise & memorizing noise \\
+    \hline
+    MLP & 0.0021 & 0.0249 & 0.0174 \\
+    LSTM & 0.0021 & 0.0127 & 0.5554 \\
+    CNN & 0.0021 & 0.0136 & 0.0234 \\
+  \end{tabular}
+  \caption{Validation loss of different neural network architectures for 
+  time series prediction on the sinus function stated 
+  in RMSE.}
+  \label{tab:noise_finals}
+\end{table}
   
 \begin{figure}
   \begin{subfigure}{.35\textwidth}
@@ -152,7 +197,7 @@ shown in Table ??.%~\ref{tab:noise_finals}.
   \end{subfigure}
   \caption{Impact of different kinds of noise on the time series prediction
   using a feedforward neural network with one hidden layer. Number of hidden
-  units stays 10 in all simulations. Gaussian distributed noise with $\sigma = 
+  units stays 10 in all simulations. The noise is normal distributed with $\sigma = 
   0.1$.}
   \label{fig:noise_impact} 
 \end{figure}
@@ -255,11 +300,11 @@ of chaos up to this point.
 \begin{figure}
   \centering
   \includegraphics[width=0.6\textwidth]{figures/mackey_glass_cnn.pdf}
-  \label{fig:mackey_cnn}
   \caption{Validation error of the convolutional neural network for different 
   time delay values $\tau$ of the Mackey Glass equation. The error increases 
   strongly for values of $\tau > 20$, indicating a strong chaotic behavior 
   from this point.}
+  \label{fig:mackey_cnn}
 \end{figure}
 
 In the next step, we compare our feedforward neural network and our LSTM 
@@ -297,17 +342,16 @@ architecture}.
 The next section deals with time series forecasting of biological oscillators, 
 as described by Novak \textit{et al} \cite{novak2008}. For different aspects of
 cell physiology, e.g. the DNA synthesis, this kind of oscillators can be 
-observed. Novak \textit{et al} show that oscillations in simple ODEs can be 
+observed. Novak \textit{et al.} show that oscillations in simple ODEs can be 
 produced by incorporating an explicit time delay \cite{novak2008}, similar to 
 the Mackey Glass equations \cite{mackey1977}.
 
-Recently, Strömstedt \textit{et al} analyzed the capability of neural network
+Recently, Strömstedt \textit{et al.} analyzed the capability of neural network
 architectures to model stochastic time series \cite{stroemstedt2018} at the 
 example of time series produced according to the characteristics of Novak 
 \textit{et al} \cite{novak2008}. In this section, we reproduce their results for
 the LSTM architecture and state fundamental limits for neural networks to 
 approximate stochastic time series.
-
 
 The time series data is generated using \texttt{gillespy} \cite{abel2016}.
 Using this framework, a simple stochastic reaction system with 2 states is 
@@ -315,6 +359,15 @@ set up. One protein $X$ is produced more the less of the other protein $Y$
 exists. $X$ and $Y$ are both continuously reduced but $Y$ gets reduced stronger
 for smaller values of $Y$. A set of 7 parameters is used to parametrize the 
 system.
+
+The motivation for using neural netowrks to generate time series is the 
+computational expensiveness of analytical solutions like the Gillespie 
+algorithm \cite{gillespie1977}. On experiments on our hardware 
+(see Table~\ref{tab:hardware} for details) 
+we need more than 6 seconds to simulate the biological oscillator with two
+states. This makes grid search approaches on the large number of parameter 
+combinations intractable. Using the 2-layer LSTM approach, predictions for 
+short time series can be done in less than $0.2$ seconds on our hardware.
 
 The goal here is to train a LSTM based 
 model to convert a set of input parameters into a time series. The first 
@@ -331,9 +384,10 @@ was computed under $100$ (stochastic) trajectories. After that, the network was
 trained to predict the time series based on the (unchanged) parameters. We see 
 that the short-term predictions are accurate and have the same magnitude as the
 ground truth signal -- but the more time steps are simulated, the larger is the
-difference between the ground truth trajectories due to stochasticity. Because
-of that, the neural network predicts the mean of the signals and the amplitude
-decreases. It should be noted that the trends in the time series are still 
+difference between the ground truth trajectories due to stochasticity. In other
+words, the neural network predicts the mean of the signals and the amplitude
+decreases due to the increasing variance of the signal over time.
+It should be noted that the trends in the time series are still 
 recognized, just with a smaller amplitude.
 
 \begin{table}
@@ -346,15 +400,6 @@ recognized, just with a smaller amplitude.
   \label{tab:hardware}
 \end{table}
 
-The motivation for using neural netowrks to generate time series is the 
-computational expensiveness of analytical solutions like the Gillespie 
-algorithm \cite{gillespie1977}. On experiments on our hardware 
-(see Table~\ref{tab:hardware} for details) 
-we need more than 6 seconds to simulate the biological oscillator with two
-states. This makes grid search approaches on the large number of parameter 
-combinations intractable. Using the 2-layer LSTM approach, predictions for 
-short time series can be done in less than $0.2$ seconds on our hardware.
-
 \begin{figure}
   \centering
   \includegraphics[width=\textwidth]{figures/nn_limitation.pdf}
@@ -362,25 +407,27 @@ short time series can be done in less than $0.2$ seconds on our hardware.
   \textbf{LSTM} network. Sampled ground truth data are unseen for the network.
   Mean computed on all stochastic trajectories.}
   \label{fig:nn_limitation}
-\end{figure}
+\end{figure} 
 
 \section{Conclusion}
 
 In this report, we investigate how chaotic time series can be approximated
 using neural networks. It is possible to improve the forecasting results by 
-advanced architectures. Both \textbf{LSTM} and \textbf{CNN} based neural
-networks outperform the feedforward neural network with one hidden layer,
+advanced architectures. Especially the convolutional neural networks
+outperform the feedforward neural network with one hidden layer,
 although theoretically all classes are capable of approximating any continuous
-function. We assume that the hierarchical features in time series can be 
-captured better using a \textbf{LSTM} by capturing time dependencies or a 
-\textbf{CNN} for extracting hierarchical features. 
-Unfortunately, it is shown that neural networks can only be used to
+function. We assumed that the hierarchical features in time series can be 
+captured better using a \emph{LSTM} by capturing time dependencies or a 
+\emph{CNN} for extracting hierarchical features, but the results indicate that
+the convolutional neural networks also show superior performance in this area.
+Unfortunately, it is also shown that neural networks can only be used to
 generate stochastic time series in a limited way. Since the prediction operation
 is deterministic, the possibility of predicting the stochastic time series
 declines with the length of the prediction. Only the general trends can be seen
 from the neural network, the amplitude declines below the level of the 
-ground truth.
+original time series.
 
 \bibliographystyle{alpha}
 \bibliography{report}
+
 \end{document}
