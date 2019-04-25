@@ -10,11 +10,11 @@ from data_generator import DataGenerator
     by comparing 2 solutions with similar but not equal initial conditions.
 """
 def plt_mg_chaos(tau, out_file):
-    N = 1000
-    start_one = 1.5
+    N = 500
+    start_one = 1.2
     data_one = DataGenerator.generate_mg_euler(N = N, start_value = start_one, beta = 0.2, 
         gamma = 0.1, n = 10, tau = tau)[tau:]
-    start_two = 1.51
+    start_two = 1.21
     data_two = DataGenerator.generate_mg_euler(N = N, start_value = start_two, beta = 0.2, 
         gamma = 0.1, n = 10, tau = tau)[tau:]
     plt.close("all")
@@ -22,6 +22,7 @@ def plt_mg_chaos(tau, out_file):
     plt.plot(np.arange(len(data_two)), data_two)
     plt.ylabel("x(t)")
     plt.xlabel("time steps")
+    plt.legend(("x(0) = 1.2", "x(0) = 1.21"))
     plt.title("Chaos in Mackey Glass equations")
     plt.savefig(out_file)
 

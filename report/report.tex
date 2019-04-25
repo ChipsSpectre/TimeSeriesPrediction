@@ -192,14 +192,25 @@ shown in Table ??.%~\ref{tab:noise_finals}.
 In order to model diseases related to dynamic respiratory and hematopoietic
 diseases, Mackey \textit{et al.} proposed the mackey-glass equations, a kind of
 first-order nonlinear differential delay equations to model 
-the number of white blood cells over time \cite{mackey1977}. If the
-delayed time ($x_{\tau} = x(t - \tau)$) exceeds the delay $\tau > 16.8$, then
-equation \ref{equ:mackey} behaves chaotic \cite{farmer1982}.
+the number of white blood cells over time \cite{mackey1977}. The solutions to 
+these equations given in Equation~\ref{equ:mackey}
+exhibit chaotic behavior under certain conditions \cite{farmer1982}. For fixed 
+parameters $a = 0.2$, $b=0.1$ and $c=10$ this system has a stable fixed point 
+attractor for $\tau < 4.53$. With increasing delay time, the system gets less 
+stable. For delay times of $4.53 < \tau < 13.3$ there is a limit cycle attractor
+whose period raises for $13.3 \leq \tau \leq 16.8$. For delay time 
+$\tau > 16.8$ the system shows chaotic behavior.
 
 \begin{equation}
-  \frac{dx}{dt} = \beta \cdot \frac{x_{\tau}}{1 + x_{\tau}^n}
+  \frac{dx}{dt} = \frac{a \cdot x(t - \tau)}{1 + x(t - \tau)^c} - b \cdot x(t)
   \label{equ:mackey}
 \end{equation}
+
+By using the Euler method to discretize the Mackey Glass time series, we can
+see that the chaotic behavior gets stronger for increasing $\tau > 16.8$. In 
+Figure~\ref{fig:mackey_chaos}, we simulate the solution of the Mackey Glass 
+time series for slightly different initial conditions. It is clearly visible
+that for $\tau = 17$, the time series diverges slower than for $\tau = 25$.
 
 The first approach to predict the short-time behavior of chaotic time series
 was done by Farmer \textit{et al.} who proposed a \texttt{local approximation}
@@ -208,13 +219,6 @@ machines by Müller \textit{et al.} \cite{muller1997}, the focus in research
 shifted towards artifical neural networks which enable even better predictions.
 Two of the latest developments are the usage of Wavelet Networks
 \cite{alexandridis2013} and particle swarm optimization \cite{caraballo2016}.
-
-The solution to the Mackey Glass equation is discretized using the Euler method,
-as given in Equation~\ref{equ:mackey_euler}. using this discretisation we can
-see the chaotic nature of the solution by comparing the time series evolution 
-in
-Figure~\ref{fig:mackey_chaos}. It can be seen clearly that the chaotic behavior
-of the system gets stronger when the time delay is increased.
 
 \begin{equation}
   x(t+1) = x(t) + \frac{\beta x(t - \tau)}{1 + x^{n}(t - \tau)} - \gamma x(t)
@@ -276,7 +280,7 @@ on the root mean squared error (RMSE), computed in Equation~\ref{equ:rmse}.
 
 \begin{table}
   \centering
-  \begin{tabular}{c|c}
+  \begin{tabular}{c|c} 
     Method &  $RMSE_{x(t+6)}$ \\
     \hline
     Linear model & 0.5503 \\
