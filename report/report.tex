@@ -289,6 +289,11 @@ on the root mean squared error (RMSE), computed in Equation~\ref{equ:rmse}.
   \label{tab:mackey_results}
 \end{table}
 
+After selecting the best hyperparameters for our architectures, we choose to 
+use a \textbf{CNN} architecture for Mackey Glass time series prediction, 
+because with this architecture we achieve lowest RMSE. \textbf{TODO: clarify
+architecture}.
+
 \subsection{Biological oscillator time series forecasting}
 
 The next section deals with time series forecasting of biological oscillators, 
@@ -368,7 +373,10 @@ using neural networks. It is possible to improve the forecasting results by
 advanced architectures. Both \textbf{LSTM} and \textbf{CNN} based neural
 networks outperform the feedforward neural network with one hidden layer,
 although theoretically all classes are capable of approximating any continuous
-function. Unfortunately, it is shown that neural networks can only be used to
+function. We assume that the hierarchical features in time series can be 
+captured better using a \textbf{LSTM} by capturing time dependencies or a 
+\textbf{CNN} for extracting hierarchical features. 
+Unfortunately, it is shown that neural networks can only be used to
 generate stochastic time series in a limited way. Since the prediction operation
 is deterministic, the possibility of predicting the stochastic time series
 declines with the length of the prediction. Only the general trends can be seen
