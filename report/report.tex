@@ -49,20 +49,18 @@ difficulty of time series prediction, even for simple mathematical functions,
 as seen in section~\ref{sec:sine}.
 
 The remaining report is structured as follows. First, we perform proper time
-series prediction on the $sine$ function and show how different noise models
-impact the prediction ability of our network models. We conduct an evaluation
-how these results can be extended to the prediction of
-ordinary differential equations (\textbf{ODE}s) at the example of the
-differential equations of the harmonic oscillator. After that, we show how the
-stochasticity of noise impactss the possibility to predict deterministic
+series prediction on the sinus function and show how different noise models
+impact the prediction ability of our network models. After that, we show how 
+different levels of chaos impact the possibility to forecast the development 
+of time series at the example of the \emph{Mackey Glass} time series. We show
+how the stochasticity of noise impactss the possibility to predict deterministic
 chaotic time series at the example of the \emph{Mackey Glass} time series. Last
-but not least, we report how the poor results of numerical approximations on
-stocastic differential equations (\textbf{SDE}s) can be explained based on our
-previous results.
+but not least, we report fundamental limitations of neural networks to
+approximate stochastic time series at the example of biological oscillators.
 
 \section{Methods}
 
-In our analysis, we use four different architectures and neural networks and
+In our analysis, we use three different architectures and neural networks and
 optimize their hyperparameters for the respective use case. Since Hornik
 \textit{et al.} have shown that feedforward neural networks are universal
 function approximators \cite{hornik1989}, we evaluate this architecture with
@@ -88,18 +86,6 @@ vision has inspired researchears in time series prediction to also apply
 \textbf{CNN}s \cite{cui2016, borovykh2017}, so we also evaluate this
 architecture in our analysis.
 
-Last but not least, we analyse the \textbf{N}onlinear \textbf{A}uto\textbf{R}
-egressive models with e\textbf{X}ogenous input (\textbf{NARX}).
-These networks are a recurrent
-neural networks that relinquish of feedback from the hidden state and only use
-feedback from the output state. It has been shown by Siegelmann \textit{et al.}
-that even with the limited feedback \textbf{NARX} has computing capabilities of
-a Turing machine \cite{siegelmann1997} and is therefore a universal function
-approximator, too. This type of neural network was not only used for chaotic
-time series prediction \cite{diaconescu2008}, but also provides current
-state of the art performance in time series prediction as a attention-based
-neural network \cite{qin2017}. 
-
 All implementation is done using the \texttt{Python} programming language in
 version $3.6.7$. The time series data is created and loaded in the
 \texttt{numpy} framework in version $1.16.1$. In order to train the neural
@@ -116,13 +102,21 @@ reproducibility of our results.
 \subsection{Time series forecasting of periodic functions}
 \label{sec:sine} 
 In the first part of the analysis, we analyze the capability of different neural
-network architectures to perform time series prediction on the periodic $sine$
+network architectures to perform time series prediction on the periodic sinus
 function. This task can be considered simple, because the different parts of the
-sine wave occur multiple times in the data. It is therefore interesting how
+sine wave occur multiple times in the data, i.e. the function is periodic.
+It is therefore interesting how
 robust the network architectures are with regard to different kinds of noise.
 
 In this section, we provide information about the last 10 time sequence points
-to the network and want to predict the next point.
+to the network and want to predict the next point, as given in 
+Equation~\ref{equ:sine}. That is, we want to estimate $x(t)$ with a function 
+$F(x(t), x(t-1), \cdots, x(t-9))$ that is computed using a neural network.
+
+\begin{equation}
+  \hat{x} (t + 1) \approx F(x(t), x(t-1), \cdots, x(t-9))
+  \label{equ:sine}
+\end{equation}
 
 In Figure~\ref{fig:noise_impact}, we see that a densely connected neural network
 with one hidden layer of 10 nodes is capable of performing the time series
@@ -131,7 +125,7 @@ deviation $\sigma = 0.1$, the
 network can still be trained to fit the data correctly. But if the noise is not
 applied independently in each timestep, the convergence takes more time steps as
 pointed out in Figure~\ref{fig:noise_loss_impact}. This effect is especially 
-strong for the \textbf{LSTM} architecture, where even 100 epochs are not enough
+strong for the \emph{LSTM} architecture, where even 100 epochs are not enough
 for the validation loss to converge, compared to the other approaches that need
 only 20 epochs.
 
