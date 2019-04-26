@@ -1,0 +1,8 @@
+- 12/18 points prediction in mg pred
+- include "16.8" point in report -> done
+- uppsala paper sedning
+- characterise time scale of stochastic prediction
+
+search engines:
+- download music collection 
+- setup branching model

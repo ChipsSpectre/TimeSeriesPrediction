@@ -9,3 +9,12 @@
 
 # python trash files
 *.pyc
+
+# vscode trash files
+.vscode/
+
+# result text files
+sourcecode/*.txt
+
+# notes 
+report/notes.txt

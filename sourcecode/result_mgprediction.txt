@@ -1,0 +1,12 @@
+{'name': 'CNN', 'noise': 'iid', 'sigma': 0.01, 'rmse': 0.01963121952082232}
+{'name': 'CNN', 'noise': 'iid', 'sigma': 0.1, 'rmse': 0.08056221668617956}
+{'name': 'CNN', 'noise': 'wiener', 'sigma': 0.01, 'rmse': 0.024235463223698808}
+{'name': 'CNN', 'noise': 'wiener', 'sigma': 0.1, 'rmse': 0.21717467769955318}
+{'name': 'MLP', 'noise': 'iid', 'sigma': 0.01, 'rmse': 0.0249355706831443}
+{'name': 'MLP', 'noise': 'iid', 'sigma': 0.1, 'rmse': 0.09490512602374918}
+{'name': 'MLP', 'noise': 'wiener', 'sigma': 0.01, 'rmse': 0.034770060424765804}
+{'name': 'MLP', 'noise': 'wiener', 'sigma': 0.1, 'rmse': 0.21615335748068695}
+{'name': 'LSTM', 'noise': 'iid', 'sigma': 0.01, 'rmse': 0.04316813944812835}
+{'name': 'LSTM', 'noise': 'iid', 'sigma': 0.1, 'rmse': 0.08622394558511885}
+{'name': 'LSTM', 'noise': 'wiener', 'sigma': 0.01, 'rmse': 0.03467174822697058}
+{'name': 'LSTM', 'noise': 'wiener', 'sigma': 0.1, 'rmse': 0.20441285647401455}
