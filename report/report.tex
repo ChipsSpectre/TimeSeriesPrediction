@@ -312,7 +312,10 @@ of chaos up to this point.
 In the next step, we compare our feedforward neural network and our LSTM
 architecture with the results stated by Caraballo \textit{et al.}
 \cite{caraballo2016} in Table~\ref{tab:mackey_results}. The results are based
-on the root mean squared error (RMSE), computed in Equation~\ref{equ:rmse}.
+on the root mean squared error (RMSE), computed in Equation~\ref{equ:rmse}. By 
+using the \emph{ReLU} (Rectified Linear Unit) activation function and two
+hidden layers with 32 and 16 nodes, respectively, we outperform the 
+backpropagation network reported by Caraballo \textit{et al}. 
 From our considered models, the \emph{CNN} achieves the lowest RMSE value and
 allows for accurate prediction, both for validation and for test data as seen
 in Figure~\ref{fig:mackey_pred}. This \emph{CNN} uses three convolutional layers
