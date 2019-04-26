@@ -19,12 +19,10 @@ import matplotlib.pyplot as plt
 class MGMLP(Model):
     def __init__(self):
         super(MGMLP, self).__init__()
+        self.name = "MLP"
         self.net = Sequential()
-        # self.net.add(LSTM(50, return_sequences=False))
         self.net.add(Dense(32, activation="relu"))
-        # self.net.add(Dropout(0.2))
         self.net.add(Dense(16, activation="relu"))
-        # self.net.add(Dropout(0.2))
         self.net.add(Dense(1, activation=None))
 
     def predict(self, x):
@@ -49,6 +47,7 @@ class MGLSTM(Model):
     def __init__(self):
         super(MGLSTM, self).__init__()
         self.net = Sequential()
+        self.name = "LSTM"
         self.net.add(LSTM(10, return_sequences=False))
         # self.net.add(Dense(32, activation="relu"))
         # # self.net.add(Dropout(0.2))
@@ -71,6 +70,7 @@ class MGCNN(Model):
     def __init__(self):
         super(MGCNN, self).__init__()
         self.net = Sequential()
+        self.name = "CNN"
         n_filters = 8
         self.net.add(Conv1D(filters=n_filters,
                             activation="relu", kernel_size=3, padding="same"))
@@ -125,9 +125,9 @@ if __name__ == "__main__":
         .generate_macke_glass_training_data(data=test)
 
     # prepare for LSTM/CNN
-    train_x = train_x.reshape(*train_x.shape, 1)
-    val_x = val_x.reshape(*val_x.shape, 1)
-    test_x = test_x.reshape(*test_x.shape, 1)
+    # train_x = train_x.reshape(*train_x.shape, 1)
+    # val_x = val_x.reshape(*val_x.shape, 1)
+    # test_x = test_x.reshape(*test_x.shape, 1)
 
     history = net.train(train_x, train_y, val_x, val_y, epochs, verbose=1)
 
@@ -138,16 +138,15 @@ if __name__ == "__main__":
 
     print("Test error: {}".format(np_rmse(test_y, pred_test)))
 
-    plt.plot(np.arange(data_points.shape[0]), data_points)
-    plt.plot(23 + np.arange(pred_train.shape[0]), pred_train)
-    plt.plot(500 + 23 + np.arange(pred_val.shape[0]), pred_val)
-    plt.plot(1000 + 23 + np.arange(pred_test.shape[0]), pred_test)
-    plt.title("Noiseless Mackey Glass time series forecasting")
-    plt.xlabel("time step")
-    plt.ylabel("time series value x(t)")
-    plt.legend(("ground truth", "train pred.",
-                "validation pred.", "test pred."))
-    plt.savefig("mg_pred.pdf")
-    plt.show()
-
-    print(history)
+    # plt.figure(figsize=(20,10))
+    # plt.plot(np.arange(data_points.shape[0]), data_points)
+    # plt.plot(23 + np.arange(pred_train.shape[0]), pred_train)
+    # plt.plot(500 + 23 + np.arange(pred_val.shape[0]), pred_val)
+    # plt.plot(1000 + 23 + np.arange(pred_test.shape[0]), pred_test)
+    # plt.title("Noiseless Mackey Glass time series forecasting")
+    # plt.xlabel("time step")
+    # plt.ylabel("time series value x(t)")
+    # plt.legend(("ground truth", "train pred.",
+    #             "validation pred.", "test pred."))
+    # plt.savefig(os.path.join(figure_path, "mg_pred_cnn.pdf"))
+    # plt.show()
