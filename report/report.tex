@@ -287,9 +287,11 @@ series points in $x(t)$, $x(t-6)$, $x(t-12)$, and $x(t-18)$. We investigate how
 an increase in chaotic behavior impacts the prediction capability of the
 different neural network architectures. The results for the feedforward neural
 network are depicted in Figure~\ref{fig:mackey_cnn}. For this plot, a 2-layer 
-CNN architecture was used, incoroporating "same" padding and a kernel size of 3.
-The first 3000 time points of the time series are used for training, the 1000 
-following points for validation.
+LSTM architecture was used, using 10 hidden nodes in the LSTM layer,
+followed by a feedforward layer to sum up for the output value.
+The first 500 time points of the time series are used for training, the 500 
+following points for validation. Additional 500 points are not used during the
+training procedure at all and form the test set.
 
 It can be seen that for non-chaotic solutions of the macke-glass time series the
 model is able to predict precisely, and that for values of $\tau > 20$ the 
@@ -305,12 +307,36 @@ of chaos up to this point.
   strongly for values of $\tau > 20$, indicating a strong chaotic behavior 
   from this point.}
   \label{fig:mackey_cnn}
-\end{figure}
+\end{figure} 
 
 In the next step, we compare our feedforward neural network and our LSTM 
 architecture with the results stated by Caraballo \textit{et al.} 
 \cite{caraballo2016} in Table~\ref{tab:mackey_results}. The results are based 
 on the root mean squared error (RMSE), computed in Equation~\ref{equ:rmse}.
+From our considered models, the \emph{CNN} achieves the lowest RMSE value and
+allows for accurate prediction, both for validation and for test data as seen
+in Figure~\ref{fig:mackey_pred}. This \emph{CNN} uses three convolutional layers
+with 1D convolutions, kernel size of 3, "same" padding and 8 
+filters each. A classical
+feedforward layer without activation function is used to extract the output
+value for the time series prediction.
+
+The \emph{LSTM} employs 10 LSTM nodes, followed by a feedforward layer to sum up
+the results. A variety of other layer configurations has been applied 
+on the problem,
+but all consistently perform worse than the other neural network architectures.
+We assume that the chaotic behavior of the time series confuses the \emph{LSTM}
+which is trying to account for temporal dependencies between the time series 
+points.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{figures/mg_pred_cnn.pdf}
+  \caption{The prediction of the noisefree Mackey Glass time series using a 
+  \emph{CNN}. The precise predictions for training, validation and testing 
+  points show the accurate approximation of the chaotic time series.}
+  \label{fig:mackey_pred}
+\end{figure}
 
 \begin{equation}
   RMSE = \sqrt{\frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{n}}
@@ -324,7 +350,10 @@ on the root mean squared error (RMSE), computed in Equation~\ref{equ:rmse}.
     \hline
     Linear model & 0.5503 \\
     Cascade correclation NN & 0.0624 \\
-    RBFNN & 0.0114 \\
+    \textit{proposed LSTM} & 0.0131 \\
+    \textit{proposed MLP} & 0.0125 (vs. 0.0262 \cite{caraballo2016}) \\
+    RBFNN & 0.0114 \\    
+    \textit{proposed CNN} & 0.0075 \\
     ANN + PSO \cite{caraballo2016} & 0.0053 \\
   \end{tabular}
   \caption{Mackey Glass time series forecasting results using different neural
@@ -332,10 +361,21 @@ on the root mean squared error (RMSE), computed in Equation~\ref{equ:rmse}.
   \label{tab:mackey_results}
 \end{table}
 
-After selecting the best hyperparameters for our architectures, we choose to 
-use a \textbf{CNN} architecture for Mackey Glass time series prediction, 
-because with this architecture we achieve lowest RMSE. \textbf{TODO: clarify
-architecture}.
+Now we apply noise on the mackey glass time series to account for the imperfect
+data characteristic to biological measurements. The results for low noise 
+($\sigma=0.01$) are given in Table~\ref{tab:mackey_lownoise} and the results for
+a higher noise ($\sigma = 0.1$) 
+level are given in Table~\ref{tab:mackey_highnoise}.
+
+\begin{table}
+  \centering
+  \begin{tabular}{c|c|c}
+    Architecture & $i.i.d.$ noise & Wiener process noise \\
+    f & g & g \\
+  \end{tabular} 
+  \caption{low}
+  \label{tab:mackey_lownoise}
+\end{table}
 
 \subsection{Biological oscillator time series forecasting}
 
@@ -408,7 +448,7 @@ recognized, just with a smaller amplitude.
   Mean computed on all stochastic trajectories.}
   \label{fig:nn_limitation}
 \end{figure} 
-
+ 
 \section{Conclusion}
 
 In this report, we investigate how chaotic time series can be approximated
