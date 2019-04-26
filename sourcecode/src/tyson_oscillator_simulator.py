@@ -13,31 +13,41 @@ sys.path[:0] = ['..']
 
 if __name__ == '__main__':
     np.random.seed(0)
+    NUM_PARAMS = 7 
     n_traj = 101
+    n_units = 100
     figure_path = os.path.join("..", "report", "figures")
 
-    tyson_model = Tyson2StateOscillator()
+    params = [
+        {
+            "P": 2.0,
+            "kt": 20.0,
+            "kd": 1.0,
+            "a0": 0.005,
+            "a1": 0.05,
+            "a2": 0.1,
+            "kdx": 1.0
+        }
+    ]
 
-    # =============================================
-    # Simulate the mode and return the trajectories
-    # =============================================
-    # To set up the model, first create an empty model object. Then, add
-    # species and parameters as was set up above.
+    tyson_model = Tyson2StateOscillator(timespan=n_units, parameter_values = params[0])
+
     t1 = time.time()
     tyson_trajectories = tyson_model.run(show_labels=False, seed=0,
                                          number_of_trajectories=n_traj)
     t2 = time.time()
     print("finished running in {} seconds.".format(t2-t1))
+    print(tyson_trajectories[0])
 
-    n_units = 101
     net = Sequential()
     net.add(LSTM(units=n_units, return_sequences=True))
     net.add(LSTM(units=n_units, return_sequences=False))
     net.compile("adam", "mse")
-    params = np.array([2.0, 20.0, 1.0, 0.005, 0.05, 0.1, 1.0])
-    x = np.zeros([n_traj-1, len(params), 1])
+    x = np.zeros([n_traj-1, NUM_PARAMS, 1])
     for i in range(n_traj-1):
-        x[i, :, 0] = params
+        ps = params[0]
+        x[i, :, 0] = np.array([ps["P"], ps["kt"], ps["kd"], ps["a0"],
+            ps["a1"], ps["a2"], ps["kdx"]])
 
     y = np.zeros([n_traj-1, n_units])
     for i in range(n_traj-1):
@@ -67,32 +77,3 @@ if __name__ == '__main__':
     plt.ylabel("time series value X(t)")
     plt.legend(("ground truth", "prediction", "mean"))
     plt.savefig(os.path.join(figure_path, "nn_limitation.pdf"))
-
-    import sys
-    sys.exit(0)
-
-    # =============================================
-    # plot just the first trajectory, 0, in both time and phase space:
-    # =============================================
-    from matplotlib import gridspec
-
-    gs = gridspec.GridSpec(1, 2)
-
-    ax0 = plt.subplot(gs[0, 0])
-    ax0.plot(tyson_trajectories[0][:, 0], tyson_trajectories[0][:, 1],
-             label='X')
-    ax0.plot(tyson_trajectories[0][:, 0], tyson_trajectories[0][:, 2],
-             label='Y')
-    ax0.legend()
-    ax0.set_xlabel('Time')
-    ax0.set_ylabel('Species Count')
-    ax0.set_title('Time Series Oscillation')
-
-    ax1 = plt.subplot(gs[0, 1])
-    ax1.plot(tyson_trajectories[0][:, 1], tyson_trajectories[0][:, 2], 'k')
-    ax1.set_xlabel('X')
-    ax1.set_ylabel('Y')
-    ax1.set_title('Phase-Space Plot')
-
-    plt.tight_layout()
-    plt.show()

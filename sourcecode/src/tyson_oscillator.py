@@ -10,11 +10,11 @@ class Tyson2StateOscillator(gillespy.Model):
     https://github.com/JohnAbel/gillespy/blob/master/examples/tyson_oscillator.py
     """
 
-    def __init__(self, parameter_values=None):
+    def __init__(self, timespan, parameter_values):
         system_volume = 300  # system volume
         gillespy.Model.__init__(
             self, name="tyson-2-state", volume=system_volume)
-        self.timespan(np.linspace(0, 100, 101))
+        self.timespan(np.linspace(0, timespan - 1, timespan))
         # =============================================
         # Define model species, initial values, parameters, and volume
         # =============================================
@@ -27,13 +27,13 @@ class Tyson2StateOscillator(gillespy.Model):
         # parameter "vol" in order to convert population units to concentration
         # units.
 
-        P = gillespy.Parameter(name='P', expression=2.0)
-        kt = gillespy.Parameter(name='kt', expression=20.0)
-        kd = gillespy.Parameter(name='kd', expression=1.0)
-        a0 = gillespy.Parameter(name='a0', expression=0.005)
-        a1 = gillespy.Parameter(name='a1', expression=0.05)
-        a2 = gillespy.Parameter(name='a2', expression=0.1)
-        kdx = gillespy.Parameter(name='kdx', expression=1.0)
+        P = gillespy.Parameter(name='P', expression=parameter_values["P"]) # expression=2.0)
+        kt = gillespy.Parameter(name='kt', expression=parameter_values["kt"]) #  expression=20.0)
+        kd = gillespy.Parameter(name='kd', expression=parameter_values["kd"]) # expression=1.0)
+        a0 = gillespy.Parameter(name='a0', expression=parameter_values["a0"]) # expression=0.005)
+        a1 = gillespy.Parameter(name='a1', expression=parameter_values["a1"]) # expression=0.05)
+        a2 = gillespy.Parameter(name='a2', expression=parameter_values["a2"]) # expression=0.1)
+        kdx = gillespy.Parameter(name='kdx', expression=parameter_values["kdx"]) # expression=1.0)
         self.add_parameter([P, kt, kd, a0, a1, a2, kdx])
 
         # Species

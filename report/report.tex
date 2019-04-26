@@ -379,13 +379,13 @@ definition deviate exponentially based on small variations in the initial
 conditions, it seems logical that this divergence is increased by introducing
 perturbations of the time series in every time step.
 
-\begin{table}
-  \centering
+\begin{table} 
+  \centering  
   \begin{tabular}{c|c|c|c}
     Architecture & noise type & $\sigma$ & RMSE \\
     \hline
     CNN & iid & 0.01 & 0.0196 \\
-    CNN & iid & 0.1 & 0.0806 \\
+    CNN & iid & 0.1 & 0.0806 \\ 
     CNN & wiener & 0.01 & 0.0242 \\
     CNN & wiener & 0.1 & 0.2172 \\
     MLP & iid & 0.01 & 0.0249 \\
