@@ -11,12 +11,19 @@
 
 \begin{abstract}
   Predicting the future development of time series is of interest in different
-  areas of computational biology. The time series in biological models exhibit
+  areas of computational biology. The time series in biological systems exhibit
   challenging characteristics such as chaotic or stochastic behavior. In this
-  report, time series prediction is done on different kind of biological time
-  series using deep neural networks. In our evaluation, we identify challenges
+  report, time series prediction is done on several kind of biological time
+  series using deep neural networks. We compare classical multi layer 
+  perceptrons with recurrent and convolutional architectures.
+  In our evaluation, we identify challenges
   and limitations of this approach, and compare different architectures of
-  deep neural networks with regard to their performance.
+  deep neural networks with regard to their performance. We conclude that 
+  convolutional neural networks yield the lowest error. We also show how
+  \textbf{Neural networks can be used to estimate how chaotic a time series is}
+  and that a generation of stochastic time series is not possible using 
+  deterministic neural networks, because only the mean of the probability 
+  distribution can be estimated.
 \end{abstract}
 
 \section{Introduction}
