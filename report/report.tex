@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{mathtools}
 \usepackage{subcaption}
 
 \title{Challenges in chaotic time series forecasting}
@@ -433,10 +434,18 @@ approximate stochastic time series.
 
 The time series data is generated using \texttt{gillespy} \cite{abel2016}.
 Using this framework, a simple stochastic reaction system with 2 states is
-set up. One protein $X$ is produced more the less of the other protein $Y$
+set up in Equation~\ref{equ:oscillator}.
+One protein $X$ is produced more the less of the other protein $Y$
 exists. $X$ and $Y$ are both continuously reduced but $Y$ gets reduced stronger
-for smaller values of $Y$. A set of 7 parameters is used to parametrize the
-system.
+for smaller values of $Y$. A set of 6 parameters 
+($k_{dx}, k_t, k_{dy}, a_0, a_1, a_2)$ 
+is used to parametrize the system.
+
+\begin{align}
+  \frac{dX}{dt} = & \frac{1}{1+Y^2} - k_{dx} \cdot X \\
+  \frac{dY}{dt} = & k_t \cdot X - k_{dy} \cdot Y - \frac{Y}{a_0 + a_1 \cdot Y + a_2 \cdot Y^2}
+  \label{equ:oscillator}
+\end{align}
 
 The motivation for using neural netowrks to generate time series is the
 computational expensiveness of analytical solutions like the Gillespie
