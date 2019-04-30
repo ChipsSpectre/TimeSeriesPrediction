@@ -8,7 +8,7 @@
 
 \begin{document}
 \maketitle
-
+ 
 \begin{abstract}
   Predicting the future development of time series is of interest in different
   areas of computational biology. The time series in biological systems exhibit
@@ -72,7 +72,8 @@ approximate stochastic time series at the example of biological oscillators.
 
 In our analysis, we use three different architectures and neural networks and
 optimize their hyperparameters for the respective use case. Since Hornik
-\textit{et al.} have shown that feedforward neural networks are universal
+\textit{et al.} have shown that multi-layer perceptrons (\emph{MLP})
+are universal
 function approximators \cite{hornik1989}, we evaluate this architecture with
 varying number of hidden nodes.
 
@@ -98,6 +99,16 @@ architecture in our analysis. The same way as images are composed of
 hierarchical features (e.g. a face consisting of eyes, that consist of
 certain edges etc.) we assume that similar hierarchies of features can be found
 in time series data.
+
+The loss is measured using the root mean squared error (\emph{RMSE}), because
+Caraballo \textit{et al.} \cite{caraballo2016} use this error function to 
+compare various other neural network approaches for Mackey Glass time series
+prediction. This function is computed in Equation~\ref{equ:rmse}.
+
+\begin{equation}
+  RMSE = \sqrt{\frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{n}}
+  \label{equ:rmse}
+\end{equation}
 
 All implementation is done using the \texttt{Python} programming language in
 version $3.6.7$. The time series data is created and loaded in the
@@ -134,10 +145,10 @@ $F(x(t), x(t-1), \cdots, x(t-9))$ that is computed using a neural network.
 We consider two different types of noise. First, we consider $i.i.d.$ gaussian
 noise which is added to the underlying function $f(t)$
 as seen in Equation~\ref{equ:iid_noise}. The other type of noise is a
-discretized Wiener process, i.e. a memorizing type of noise that is shown in
-Equation~\ref{equ:wiener}.
+discretized Wiener process. This type of processes is used in various areas,
+for example to study Brownian motion in Physics.
 For more details about Wiener processes, refer to Schilling
-\textit{et al} \cite{schilling2014}
+\textit{et al} \cite{schilling2014}.
 
 \begin{equation}
   \forall t: \quad x(t) = f(t) + y, \quad y \sim \mathcal{N}(0, \sigma^2)
@@ -148,7 +159,7 @@ For more details about Wiener processes, refer to Schilling
   \forall t: x(t) = f(t) + y(t), \quad y(t) = y(t-1) + y \sim \mathcal{N}(0, \sigma^2), \quad y(0) = 0
   \label{equ:wiener}
 \end{equation}
-In Figure~\ref{fig:noise_impact}, we see that a densely connected neural network
+In Figure~\ref{fig:noise_impact}, we see that a \emph{MLP}
 with one hidden layer of 10 nodes is capable of performing the time series
 prediction. Even if we apply $i.i.d.$ gaussian noise with standard
 deviation $\sigma = 0.1$, the
@@ -188,19 +199,18 @@ is confused by the temporal dependencies induced by the memorizing noise.
 \end{table}
 
 \begin{figure}
-  \begin{subfigure}{.35\textwidth}
+  \centering
+  \begin{subfigure}{\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{figures/plot_twolayer_noiseless.pdf}
+    \includegraphics[height=5cm]{figures/plot_twolayer_noiseless.pdf}
   \end{subfigure}
-  \hspace{-5mm}
-  \begin{subfigure}{.35\textwidth}
+  \begin{subfigure}{\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{figures/plot_twolayer_iidnoise.pdf}
+    \includegraphics[height=5cm]{figures/plot_twolayer_iidnoise.pdf}
   \end{subfigure}
-  \hspace{-5mm}
-  \begin{subfigure}{.35\textwidth}
+  \begin{subfigure}{\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{figures/plot_twolayer_memnoise.pdf}
+    \includegraphics[height=5cm]{figures/plot_twolayer_memnoise.pdf}
   \end{subfigure}
   \caption{Impact of different kinds of noise on the time series prediction
     using a feedforward neural network with one hidden layer. Number of hidden
@@ -211,19 +221,17 @@ is confused by the temporal dependencies induced by the memorizing noise.
 
 \begin{figure}
   \center
-  \begin{subfigure}{.35\textwidth}
+  \begin{subfigure}{\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{figures/plot_twolayer_losscompare.pdf}
+    \includegraphics[height=5cm]{figures/plot_twolayer_losscompare.pdf}
   \end{subfigure}
-  \hspace{-6mm}
-  \begin{subfigure}{.35\textwidth}
+  \begin{subfigure}{\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{figures/plot_lstm_losscompare.pdf}
+    \includegraphics[height=5cm]{figures/plot_lstm_losscompare.pdf}
   \end{subfigure}
-  \hspace{-6mm}
-  \begin{subfigure}{.35\textwidth}
+  \begin{subfigure}{\textwidth}
     \centering
-    \includegraphics[width=\linewidth]{figures/plot_cnn_losscompare.pdf}
+    \includegraphics[height=5cm]{figures/plot_cnn_losscompare.pdf}
   \end{subfigure}
   \caption{MSE loss over the number of trained epochs on training and on
     validation dataset. On the left, the classical feedforward network was used.
@@ -318,8 +326,12 @@ of chaos up to this point.
 
 In the next step, we compare our feedforward neural network and our LSTM
 architecture with the results stated by Caraballo \textit{et al.}
-\cite{caraballo2016} in Table~\ref{tab:mackey_results}. The results are based
-on the root mean squared error (RMSE), computed in Equation~\ref{equ:rmse}. By 
+\cite{caraballo2016} in Table~\ref{tab:mackey_results}. We 
+compare our results with a linear model, a cascade correlation neural network
+and a radial basis function (\emph{RBF})
+neural network additional to their approach to
+combine an artificial neural network (\emph{ANN}) with particle swarm
+optimization (\emph{PSO}) By 
 using the \emph{ReLU} (Rectified Linear Unit) activation function and two
 hidden layers with 32 and 16 nodes, respectively, we outperform the 
 backpropagation network reported by Caraballo \textit{et al}. 
@@ -347,11 +359,6 @@ points.
     points show the accurate approximation of the chaotic time series.}
   \label{fig:mackey_pred}
 \end{figure}
-
-\begin{equation}
-  RMSE = \sqrt{\frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{n}}
-  \label{equ:rmse}
-\end{equation}
 
 \begin{table}
   \centering
@@ -433,10 +440,12 @@ system.
 
 The motivation for using neural netowrks to generate time series is the
 computational expensiveness of analytical solutions like the Gillespie
-algorithm \cite{gillespie1977}. On experiments on our hardware
+algorithm \cite{gillespie1977}. The runtime of an experiment on our hardware
 (see Table~\ref{tab:hardware} for details)
-we need more than 6 seconds to simulate the biological oscillator with two
-states. This makes grid search approaches on the large number of parameter
+takes more than 6 seconds runtime to simulate the biological oscillator with two
+states for 100 time steps (yielding only one trajectory of the stochastic 
+system). This makes grid search approaches on the large number
+of parameter
 combinations intractable. Using the 2-layer LSTM approach, predictions for
 short time series can be done in less than $0.2$ seconds on our hardware.
 
