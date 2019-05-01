@@ -1,20 +1,25 @@
 import gillespy
+import scipy as sp
 import numpy as np
+import matplotlib.pyplot as plt
+
+import sys
+sys.path[:0] = ['..']
+
 
 class Tyson2StateOscillator(gillespy.Model):
     """
     Here, as a test case, we run a simple two-state oscillator (Novak & Tyson 
     2008) as an example of a stochastic reaction system.
-
-    Code from:
-    https://github.com/JohnAbel/gillespy/blob/master/examples/tyson_oscillator.py
     """
 
-    def __init__(self, timespan, parameter_values):
+    def __init__(self, parameter_values=None):
+        """
+        """
         system_volume = 300  # system volume
         gillespy.Model.__init__(
             self, name="tyson-2-state", volume=system_volume)
-        self.timespan(np.linspace(0, timespan - 1, timespan))
+        self.timespan(np.linspace(0, 100, 101))
         # =============================================
         # Define model species, initial values, parameters, and volume
         # =============================================
@@ -25,15 +30,16 @@ class Tyson2StateOscillator(gillespy.Model):
         # is multiplied by a volume unit, to get a population/s rate
         # constant. Thus, for our non-mass action reactions, we include the
         # parameter "vol" in order to convert population units to concentration
-        # units.
+        # units. Volume here = 300.
 
-        kt = gillespy.Parameter(name='kt', expression=parameter_values["kt"]) #  expression=20.0)
-        kd = gillespy.Parameter(name='kd', expression=parameter_values["kd"]) # expression=1.0)
-        a0 = gillespy.Parameter(name='a0', expression=parameter_values["a0"]) # expression=0.005)
-        a1 = gillespy.Parameter(name='a1', expression=parameter_values["a1"]) # expression=0.05)
-        a2 = gillespy.Parameter(name='a2', expression=parameter_values["a2"]) # expression=0.1)
-        kdx = gillespy.Parameter(name='kdx', expression=parameter_values["kdx"]) # expression=1.0)
-        self.add_parameter([kt, kd, a0, a1, a2, kdx])
+        P = gillespy.Parameter(name='P', expression=2.0)
+        kt = gillespy.Parameter(name='kt', expression=20.0)
+        kd = gillespy.Parameter(name='kd', expression=1.0)
+        a0 = gillespy.Parameter(name='a0', expression=0.005)
+        a1 = gillespy.Parameter(name='a1', expression=0.05)
+        a2 = gillespy.Parameter(name='a2', expression=0.1)
+        kdx = gillespy.Parameter(name='kdx', expression=1.0)
+        self.add_parameter([P, kt, kd, a0, a1, a2, kdx])
 
         # Species
         # Initial values of each species (concentration converted to pop.)
@@ -79,19 +85,10 @@ class Tyson2StateOscillator(gillespy.Model):
 
         self.add_reaction([rxn1, rxn2, rxn3, rxn4, rxn5])
 
+
 if __name__ == '__main__':
-    import matplotlib.pyplot as plt
-    params = [
-        {
-            "kt": 20.0,
-            "kd": 1.0,
-            "a0": 0.005,
-            "a1": 0.05,
-            "a2": 0.1,
-            "kdx": 1.0
-        }
-    ]
-    tyson_model = Tyson2StateOscillator(timespan=100, parameter_values = params[0])
+
+    tyson_model = Tyson2StateOscillator()
 
     # =============================================
     # Simulate the mode and return the trajectories

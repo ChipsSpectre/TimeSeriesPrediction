@@ -35,7 +35,12 @@ def cnn(n_input, n_hidden, n_output=1):
         equal to n_hidden.
     """
     net = Sequential()
-    for _ in range(n_hidden):
+    layer_map = {
+        5: 1,
+        10: 2,
+        20: 3
+    }
+    for _ in range(layer_map[n_hidden]):
         net.add(Conv1D(filters=8,
                        activation="relu", kernel_size=3, padding="same"))
     net.add(Flatten()),
@@ -95,12 +100,12 @@ def perform_estimation(in_seq_len, n_hidden, net_fun, learning_rate, epochs,
 
 
 def grid_search():
-    in_seq_lens = [5]
-    n_hiddens = [10]
+    in_seq_lens = [10]
+    n_hiddens = [20]
     net_funs = [mlp, lstm, cnn]
-    learning_rates = [0.001]
-    epochs_list = [1]
-    sigmas = [0]
+    learning_rates = [0.001, 0.01, 0.1]
+    epochs_list = [10, 100, 500]
+    sigmas = [0, 0.01, 0.1]
     noise_types = ["iid", "wiener"]
 
     # original data
@@ -122,4 +127,5 @@ if __name__ == "__main__":
     out_seq_len = 1
     data = np.sin(np.linspace(0, 6*np.pi, N))
     out_file = "sine_results.txt"
+    open(out_file, mode="a").write("input_len,n_hidden,network,learning_rate,epochs,sigma,noise_type,mse_error\n")
     grid_search()
