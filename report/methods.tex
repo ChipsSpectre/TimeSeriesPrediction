@@ -14,25 +14,26 @@ improvement of using a recurrent neural network. This type of neural network has
 already been applied to time series prediction \cite{connor1994}, but suffers
 from the vanishing gradient problem when capturing long-term dependencies in a
 sequence. Because of that, we decide to evaluate only the Long Short-Term Memory
-(\textbf{LSTM})
+(\emph{LSTM})
 network architecture \cite{hochreiter1997}, which was successfully applied in
 various time series prediction tasks like anomaly detection \cite{malhotra2015},
 stock price \cite{fischer2018} and protein disorder prediction
 \cite{hanson2016}.
 
-In the last years, convolutional neural networks (\textbf{CNN}s) have improved
+In the last years, convolutional neural networks (\emph{CNN}s) have improved
 the results in image classification \cite{krizhevsky2012} and other computer
-vision tasks. A \textbf{CNN} learns features from the data in a hierarchical
+vision tasks. A \emph{CNN} learns features from the data in a hierarchical
 way, for example combining pixels to edges, edges to more complex forms etc.
 until a high-level classification can be done. The large success in computer
 vision has inspired researchears in time series prediction to also apply
-\textbf{CNN}s \cite{cui2016, borovykh2017}, so we also evaluate this
+\emph{CNN}s \cite{cui2016, borovykh2017}, so we also evaluate this
 architecture in our analysis. The same way as images are composed of
 hierarchical features (e.g. a face consisting of eyes, that consist of
 certain edges etc.) we assume that similar hierarchies of features can be found
 in time series data.
 
-The loss is measured using the root mean squared error (\emph{RMSE}), because
+The loss is measured using the classical mean squared error (\emph{MSE}) or 
+the root mean squared error (\emph{RMSE}), because
 López-Caraballo \textit{et al.} \cite{lopez2016} use this error function to
 compare various other neural network approaches for Mackey-Glass time series
 prediction. This function is computed in Equation~\ref{equ:rmse}.

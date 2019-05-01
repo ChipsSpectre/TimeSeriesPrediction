@@ -46,10 +46,13 @@ $F(x(t), x(t-1), \cdots, x(t-9))$ that is computed using a neural network.
         layers of with 8 filters instead.}
     \label{tab:gridparameters}
 \end{table}
-%todo: mg adam justification
 
-As we expected from our literature review, the \emph{LSTM} yielded lowest error
+As we expected based on our literature review, the \emph{LSTM} yielded lowest 
+test error
 on the noise free time series data as seen in Table~\ref{tab:noisefree_result}.
+We use the MSE here and evaluate on the test error because we are interested in 
+generalisation capability of the neural networks, which can not be evaluated 
+based on the training error.
 After investigating the high error for the \emph{CNN} architecture, we discover
 that this architecture needs a lower training rate than the \emph{LSTM}
 architecture to yield good results -- the learning rate of $0.1$ is too high
@@ -88,7 +91,7 @@ Next we investigate the influence of the type of noise
 and the standard deviation of the noise on the results 
 based on our grid search. The average error is
 strongly impacted as seen in Table~\ref{tab:wiener_iid}. We see that
-a higher $\sigma$ increases the test error, as expected. But it seems that the 
+a higher $\sigma$ increases the test error. But it seems that the 
 neural networks are less capable of filtering noise from a Wiener process, and 
 for a high $\sigma$ of this type of noise completely lose the ability to 
 approximate the underlying sinus function on the first look. A further analysis
@@ -117,10 +120,28 @@ as seen in Figure~\ref{fig:sineresult}. In Figure~\ref{fig:histogram}
 we demonstrate that only a few outliers caused the average error 
 for Wiener process noise with high $\sigma$ to increase so strongly.
 
+\begin{table}
+    \begin{tabular}{l|lccccl}
+        Noise type (standard deviation) & Net type & Epochs & Hidden Units & L.R.\\
+        \hline
+        no noise        & MLP   & 500 & 5   & 0.001 \\
+        $i.i.d.$ (0.01) & LSTM  & 500 & 5   & 0.01 \\
+        $i.i.d.$ (0.1)  & LSTM  & 100 & 5   & 0.001 \\
+        Wiener (0.01)   & CNN   & 500 & 1 layer   & 0.01 \\
+        Wiener (0.1)    & MLP   & 500 & 10  & 0.001 \\
+    \end{tabular}
+    \caption{Best performing neural network architectures for different noise 
+    settings. The \emph{LSTM} are well suited to the $i.i.d.$ distributed 
+    Gaussian noise, while the other architectures should be used for noise 
+    from a Wiener process.}
+    \label{tab:architectures}
+\end{table}
+
 After 
 investigating the architectures of the best neural networks in 
 Table~\ref{tab:architectures}, we conclude that \emph{LSTM} networks are best 
-suitable to situations in which noise with high variance occurs. But also a 
+suitable to situations in which $i.i.d.$ distributed 
+noise occurs. But also a 
 classical \emph{MLP} architecture performed best in presence of high Wiener
 noise, while for a small amount
 of Wiener noise, the \emph{CNN} architecture is advantageous. From the 
@@ -281,7 +302,8 @@ combine an artificial neural network (\emph{ANN}) with particle swarm
 optimization (\emph{PSO}). By
 using the \emph{ReLU} (Rectified Linear Unit) activation function and two
 hidden layers with 32 and 16 nodes, respectively, we outperform the
-backpropagation network reported by López-Caraballo \textit{et al}.
+backpropagation network reported by López-Caraballo \textit{et al}. with our 
+MLP architecture.
 From our considered models, the \emph{CNN} achieves the lowest RMSE value and
 allows for accurate prediction, both for validation and for test data as seen
 in Figure~\ref{fig:mackey_pred}. This \emph{CNN} uses three convolutional layers
@@ -424,7 +446,7 @@ takes this intermediate result and converts it to a sequence of length $n$.
 The analysis of the resulting time series as depicted in
 Figure~\ref{fig:nn_limitation} shows the general limitation of using a
 deterministic neural network for predicting a stochastic time series. For one
-possible of parameters for the biological oscillator, the analytical solution
+possible parameter choice for the biological oscillator, the analytical solution
 was computed under $100$ (stochastic) trajectories. After that, the network was
 trained to predict the time series based on the (unchanged) parameters. We see
 that the short-term predictions are accurate and have the same magnitude as the

@@ -76,4 +76,5 @@ if __name__ == '__main__':
     plt.xlabel("time step")
     plt.ylabel("time series value X(t)")
     plt.legend(("ground truth", "prediction", "mean"))
-    plt.savefig(os.path.join(figure_path, "nn_limitation.pdf"))
+    plt.show()
+    # plt.savefig(os.path.join(figure_path, "nn_limitation.pdf"))
