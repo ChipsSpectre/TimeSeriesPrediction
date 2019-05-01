@@ -6,6 +6,8 @@ import tqdm
 from data_generator import DataGenerator
 from models import LSTMPredictor
 
+from keras.optimizers import Adam
+
 """
     Implements time series prediction of the mackey glasst time series using
     different types of neural networks.
@@ -14,7 +16,7 @@ from models import LSTMPredictor
 if __name__ == "__main__":
     np.random.seed(0)
 
-    taus = range(1, 102, 10)
+    taus = range(1, 102, 5)
     in_seq_len = 4
     out_seq_len = 1
     n_hidden = 10
@@ -22,7 +24,8 @@ if __name__ == "__main__":
     figure_path = os.path.join("..", "report", "figures")
 
     net = LSTMPredictor(n_input=in_seq_len, n_hidden=10, n_output=out_seq_len)
-    net.compile("adam", "mse")
+    optim = Adam(lr=0.01)
+    net.compile(optim, "mse")
 
     res_chaos = []
     for tau in tqdm.tqdm(taus):
@@ -42,10 +45,6 @@ if __name__ == "__main__":
 
         history = net.train(train_x, train_y, val_x, val_y, epochs, verbose=0)
 
-        # plt.plot(np.arange(epochs), history.history["loss"])
-        # plt.plot(np.arange(epochs), history.history["val_loss"])
-        # plt.show()
-
         res_chaos.append(history.history["val_loss"][-1])
         print(res_chaos[-1])
         print(np.array(res_chaos))
@@ -56,6 +55,6 @@ if __name__ == "__main__":
     plt.title("Prediction capability under chaos")
     plt.xlabel("time delay")
     plt.ylabel("validation MSE after training")
-    plt.savefig(os.path.join(figure_path, "mackey_glass_cnn.pdf"))
+    plt.savefig(os.path.join(figure_path, "mackey_glass_lstm_fast.pdf"))
     plt.show()
     print(res_chaos)

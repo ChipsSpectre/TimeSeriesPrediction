@@ -3,7 +3,7 @@
 \usepackage{graphicx}
 \usepackage{mathtools}
 \usepackage{subcaption}
-\addtolength{\textwidth}{7mm}
+\addtolength{\textwidth}{9mm}
 
 \title{Challenges in chaotic time series forecasting}
 \author{Maximilian Hornung}
@@ -237,16 +237,16 @@ Two of the latest developments are the usage of Wavelet Networks
 
 \begin{figure}
     \centering
-    \begin{subfigure}{.5\textwidth}
+    \begin{subfigure}{.51\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{figures/mg_chaos_17.pdf}
-        \includegraphics[width=\linewidth]{figures/17.pdf}
+        \includegraphics[width=\textwidth]{figures/mg_chaos_17.pdf}
+        \includegraphics[width=\textwidth]{figures/17.pdf}
     \end{subfigure}
     \hspace{-6mm}
-    \begin{subfigure}{.5\textwidth}
+    \begin{subfigure}{.51\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{figures/mg_chaos_25.pdf}
-        \includegraphics[width=\linewidth]{figures/25.pdf}
+        \includegraphics[width=\textwidth]{figures/mg_chaos_25.pdf}
+        \includegraphics[width=\textwidth]{figures/25.pdf}
     \end{subfigure}
     \caption{Influence of time delay parameter $\tau$ on the chaotic behavior of
         the Mackey-Glass equation. The top left side of the figure
@@ -261,16 +261,15 @@ In accordance with the approach used by López-Caraballo \textit{et al.}
 \cite{lopez2016}, we predict $x(t+6)$ based on the information of the time
 series points in $x(t)$, $x(t-6)$, $x(t-12)$, and $x(t-18)$. We investigate how
 an increase in chaotic behavior impacts the prediction capability of the
-different neural network architectures. The results for the MLP
-are depicted in Figure~\ref{fig:mackey_cnn}. For this plot, a 2-layer
+different neural network architectures. The results for the \emph{LSTM}
+are depicted in Figure~\ref{fig:mackey_lstm}. For this plot, a 2-layer
 LSTM architecture is used, using 10 hidden nodes in the LSTM layer,
 followed by a feedforward layer to sum up for the output value.
 The first 500 time points of the time series are used for training, the 500
 following points for validation. Additional 500 points are not used during the
-training procedure at all and form the test set. For training our models, we
-use a learning rate of $0.01$ for the Adam optimizer, which is the default
-value suggested by the software framework and could be shown to be suitable for
-time series prediction in section \ref{sec:sine}.
+training procedure at all and form the test set. For training our models, we 
+train the models for 100 epochs. The learning rate of $0.01$ for the Adam 
+optimizer, because it outperforms the default learning rate in this situation.
 
 It can be seen that for non-chaotic solutions of the macke-glass time series the
 model is able to predict precisely, and that for values of $\tau > 20$ the
@@ -279,17 +278,17 @@ error for $\tau = 21$ in the ability of the network to compensate for the amount
 of chaos up to this point.
 
 \begin{figure}
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/mackey_glass_cnn.pdf}
-    \caption{Validation error of the convolutional neural network for different
+    \centering 
+    \includegraphics[width=0.6\textwidth]{figures/mackey_glass_lstm_fast.pdf}
+    \caption{Validation error of the \emph{LSTM} network for different
         time delay values $\tau$ of the Mackey-Glass equation. The error increases
         strongly for values of $\tau > 20$, indicating a strong chaotic behavior
         from this point.}
-    \label{fig:mackey_cnn}
+    \label{fig:mackey_lstm}
 \end{figure}
 
-In the next step, we compare our MLP and our LSTM
-architecture with the results stated by Caraballo \textit{et al.}
+In the next step, we compare our \emph{MLP}, our \emph{LSTM} and our \emph{CNN}
+architectures with the results stated by López-Caraballo \textit{et al.}
 \cite{lopez2016} in Table~\ref{tab:mackey_results}. We
 compare our results with a linear model, a cascade correlation neural network
 and a radial basis function (\emph{RBF})
@@ -298,14 +297,16 @@ combine an artificial neural network (\emph{ANN}) with particle swarm
 optimization (\emph{PSO}). By
 using the \emph{ReLU} (Rectified Linear Unit) activation function and two
 hidden layers with 32 and 16 nodes, respectively, we outperform the
-backpropagation network reported by Caraballo \textit{et al}.
+backpropagation network reported by López-Caraballo \textit{et al}.
 From our considered models, the \emph{CNN} achieves the lowest RMSE value and
 allows for accurate prediction, both for validation and for test data as seen
 in Figure~\ref{fig:mackey_pred}. This \emph{CNN} uses three convolutional layers
 with 1D convolutions, kernel size of 3, "same" padding and 8
 filters each. A classical
 feedforward layer without activation function is used to extract the output
-value for the time series prediction.
+value for the time series prediction. We avoid overfitting successfully, since
+the test data of the chaotic time series was never presented to the neural
+network, but is predicted accurately.
 
 The \emph{LSTM} employs 10 LSTM nodes, followed by a feedforward layer to sum up
 the results. A variety of other layer configurations has been applied
@@ -319,7 +320,8 @@ points.
     \centering
     \includegraphics[width=\textwidth]{figures/mg_pred_cnn.pdf}
     \caption{The prediction of the noisefree Mackey-Glass time series using a
-        \emph{CNN}. The precise predictions for training, validation and testing
+        \emph{CNN} with $3$ hidden layers.
+        The precise predictions for training, validation and testing
         points show the accurate approximation of the chaotic time series.}
     \label{fig:mackey_pred}
 \end{figure}
@@ -343,7 +345,7 @@ points.
 \end{table}
 
 Now we apply noise on the Mackey-Glass time series to account for the imperfect
-data characteristic to biological measurements. The results for these
+data typical for biological measurements. The results for these
 experiments are stated in Table~\ref{tab:mackey_noise}. We see that an increased
 standard deviation of the added noise increases the test error, measured in
 RMSE. This applies to all neural network architectures.
@@ -351,8 +353,8 @@ RMSE. This applies to all neural network architectures.
 We interpret the results of Table~\ref{tab:mackey_noise}
 as the neural networks are capable of dealing with a certain
 amount of noise. For example the \emph{CNN} has
-approximately 9 times higher error rate when increasing the $\sigma$ of the
-Wiener process from $0.01$ to $0.1$.
+approximately 9 times higher error rate when increasing the standard 
+deviation of the Wiener process from $0.01$ to $0.1$.
 
 But more interestingly,
 the negative effect of the noise is stronger if the noise is memorizing, i.e. if
@@ -388,7 +390,7 @@ perturbations of the time series in every time step.
 
 \subsection{Biological oscillator time series forecasting}
 
-The next section deals with time series forecasting of biological oscillators,
+The next section deals with time series generation of biological oscillators,
 as described by Novak \textit{et al} \cite{novak2008}. For different aspects of
 cell physiology, e.g. the DNA synthesis, this kind of oscillators can be
 observed. Novak \textit{et al.} show that oscillations in simple ODEs can be
@@ -407,7 +409,7 @@ model a stochastic reaction system with 2 states as defined
 in Equation~\ref{equ:oscillator}.
 One protein $X$ is produced more the less of the other protein $Y$
 exists. $X$ and $Y$ are both continuously reduced but $Y$ gets reduced stronger
-for smaller values of $Y$. A set of 6 parameters
+for smaller values of $Y$ in a non-linear way. A set of 6 parameters
 ($k_{dx}, k_t, k_{dy}, a_0, a_1, a_2)$
 is used to parametrize the system.
 
@@ -417,12 +419,12 @@ is used to parametrize the system.
     \label{equ:oscillator}
 \end{align}
 
-The motivation for using neural netowrks to generate time series is the
+The motivation for using neural networks to generate time series is the
 computational expensiveness of analytical solutions like the Gillespie
 algorithm \cite{gillespie1977}. The runtime of an experiment on our hardware
 (see Table~\ref{tab:hardware} for details)
-takes more than 6 seconds runtime to simulate the biological oscillator with two
-states for 100 time steps (yielding only one trajectory of the stochastic
+takes more than 6 seconds runtime to simulate this biological oscillator with
+two states for 100 time steps (yielding only one trajectory of the stochastic
 system). This makes grid search approaches on the large number
 of parameter
 combinations intractable. Using the 2-layer LSTM approach, predictions for
@@ -433,7 +435,7 @@ model to convert a set of input parameters into a time series. The first
 LSTM layer
 takes 7 input values and transforms them into $n$ sequences of 7 values, with
 $n$ being the desired length of the output sequence. The second LSTM layer
-takes this result and converts it to a sequence of length $n$.
+takes this intermediate result and converts it to a sequence of length $n$.
 
 The analysis of the resulting time series as depicted in
 Figure~\ref{fig:nn_limitation} shows the general limitation of using a
