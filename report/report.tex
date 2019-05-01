@@ -3,7 +3,7 @@
 \usepackage{graphicx}
 \usepackage{mathtools}
 \usepackage{subcaption}
-\addtolength{\textwidth}{5mm}
+\addtolength{\textwidth}{6mm}
 
 \title{Challenges in chaotic time series forecasting}
 \author{Maximilian Hornung}
@@ -11,21 +11,7 @@
 \begin{document}
 \maketitle
 
-\begin{abstract}
-    Predicting the future development of time series is of interest in different
-    areas of computational biology. The time series in biological systems exhibit
-    challenging characteristics such as chaotic or stochastic behavior. In this
-    report, time series prediction is done on several kinds of biological time
-    series using deep neural networks. We compare classical multi layer
-    perceptrons with recurrent and convolutional architectures.
-    In our evaluation, we identify challenges
-    and limitations of this approach, and compare different architectures of
-    deep neural networks with regard to their performance. We conclude that
-    convolutional neural networks yield the lowest error. We also show 
-    that a generation of stochastic time series is not possible using
-    deterministic neural networks, because only the mean of the probability
-    distribution can be estimated.
-\end{abstract}
+\input{abstract.tex}
 
 \section{Introduction}
 
@@ -391,8 +377,8 @@ In accordance with the approach used by Caraballo \textit{et al.}
 \cite{caraballo2016}, we predict $x(t+6)$ based on the information of the time
 series points in $x(t)$, $x(t-6)$, $x(t-12)$, and $x(t-18)$. We investigate how
 an increase in chaotic behavior impacts the prediction capability of the
-different neural network architectures. The results for the feedforward neural
-network are depicted in Figure~\ref{fig:mackey_cnn}. For this plot, a 2-layer
+different neural network architectures. The results for the MLP
+are depicted in Figure~\ref{fig:mackey_cnn}. For this plot, a 2-layer
 LSTM architecture is used, using 10 hidden nodes in the LSTM layer,
 followed by a feedforward layer to sum up for the output value.
 The first 500 time points of the time series are used for training, the 500
@@ -418,7 +404,7 @@ of chaos up to this point.
     \label{fig:mackey_cnn}
 \end{figure}
 
-In the next step, we compare our feedforward neural network and our LSTM
+In the next step, we compare our MLP and our LSTM
 architecture with the results stated by Caraballo \textit{et al.}
 \cite{caraballo2016} in Table~\ref{tab:mackey_results}. We
 compare our results with a linear model, a cascade correlation neural network
