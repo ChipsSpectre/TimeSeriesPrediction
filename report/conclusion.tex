@@ -1,0 +1,25 @@
+
+\section{Conclusion}
+
+In this report, we investigate time series forecasting using neural networks.
+By applying a grid search on the time series forecasting of a continuous 
+function, we find suitable architectures to produce accurate predictions for 
+all considered types of noise. We discover that it is necessary to vary the 
+configuration of the optimization algorithm w.r.t. the learning rate in order 
+to find the optimal results. It is remarkable that even the time series 
+forecasting for a function with noise from a Wiener process yielded good 
+results, since this type of noise makes the function indifferentiable at any 
+position. Furthermore, we applied neural networks to predict the chaotic 
+Mackey-Glass time series. We can show that the prediction gets more challenging
+for the neural network with a higher delay parameter $\tau$, which strenghtens
+chaotic characteristics. When applying noise from a Wiener process, the error
+rate of the prediction increases by approximately one order of magnitude. The
+Wiener process perturbates the chaotic system and influences the subsequent
+steps of the time series, which enlarges the chaotic characteristics of the 
+time series. Last but not least, we show at the example of biological
+oscillators that it is not possible to generate stochastic time series based on
+a set of scalar parameters with a deterministic neural network. The neural
+network approximator can only predict the mean of the probability distribution
+generating the noise, and therefore be used to predict trends in the time 
+series. But since the amplitude declines below the level of the original time 
+series, some features like spikes can not be generated.

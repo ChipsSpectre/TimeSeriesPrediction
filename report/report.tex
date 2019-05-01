@@ -3,6 +3,7 @@
 \usepackage{graphicx}
 \usepackage{mathtools}
 \usepackage{subcaption}
+\addtolength{\textwidth}{5mm}
 
 \title{Challenges in chaotic time series forecasting}
 \author{Maximilian Hornung}
@@ -101,7 +102,6 @@ hierarchical features (e.g. a face consisting of eyes, that consist of
 certain edges etc.) we assume that similar hierarchies of features can be found
 in time series data.
 
-\newpage
 The loss is measured using the root mean squared error (\emph{RMSE}), because
 Caraballo \textit{et al.} \cite{caraballo2016} use this error function to
 compare various other neural network approaches for Mackey-Glass time series
@@ -370,15 +370,20 @@ Two of the latest developments are the usage of Wavelet Networks
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/mg_chaos_17.pdf}
+        \includegraphics[width=\linewidth]{figures/17.pdf}
     \end{subfigure}
     \hspace{-6mm}
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/mg_chaos_25.pdf}
+        \includegraphics[width=\linewidth]{figures/25.pdf}
     \end{subfigure}
     \caption{Influence of time delay parameter $\tau$ on the chaotic behavior of
-        the Mackey-Glass equation. The left side of the figure uses $\tau = 17$,
-        the right side $\tau = 25$.}
+        the Mackey-Glass equation. The top left side of the figure
+        uses $\tau = 17$, the right side $\tau = 25$. The phase plot for 
+        $\tau=17$ shows additionally the phase plot for $\tau=15$ to visualize 
+        the similarity with a time series which is not chaotic, but has 
+        a limit cycle attractor instead.}
     \label{fig:mackey_chaos}
 \end{figure}
 
@@ -405,7 +410,7 @@ of chaos up to this point.
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/mackey_glass_cnn.pdf}
+    \includegraphics[width=0.6\textwidth]{figures/mackey_glass_cnn.pdf}
     \caption{Validation error of the convolutional neural network for different
         time delay values $\tau$ of the Mackey-Glass equation. The error increases
         strongly for values of $\tau > 20$, indicating a strong chaotic behavior
@@ -593,30 +598,7 @@ recognized, just with a smaller amplitude.
     \label{fig:nn_limitation}
 \end{figure}
 
-\section{Conclusion}
-
-In this report, we investigate time series forecasting using neural networks.
-By applying a grid search on the time series forecasting of a continuous 
-function, we find suitable architectures to produce accurate predictions for 
-all considered types of noise. We discover that it is necessary to vary the 
-configuration of the optimization algorithm w.r.t. the learning rate in order 
-to find the optimal results. It is remarkable that even the time series 
-forecasting for a function with noise from a Wiener process yielded good 
-results, since this type of noise makes the function indifferentiable at any 
-position. Furthermore, we applied neural networks to predict the chaotic 
-Mackey-Glass time series. We can show that the prediction gets more challenging
-for the neural network with a higher delay parameter $\tau$, which strenghtens
-chaotic characteristics. When applying noise from a Wiener process, the error
-rate of the prediction increases by approximately one order of magnitude. The
-Wiener process perturbates the chaotic system and influences the subsequent
-steps of the time series, which enlarges the chaotic characteristics of the 
-time series. Last but not least, we show at the example of biological
-oscillators that it is not possible to generate stochastic time series based on
-a set of scalar parameters with a deterministic neural network. The neural
-network approximator can only predict the mean of the probability distribution
-generating the noise, and therefore be used to predict trends in the time 
-series. But since the amplitude declines below the level of the original time 
-series, some features like spikes can not be generated.
+\input{conclusion.tex}
 
 \bibliographystyle{alpha}
 \bibliography{report}
