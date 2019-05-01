@@ -21,7 +21,7 @@
 In the first part of the analysis, we analyze the capability of different neural
 network architectures to perform time series prediction on the periodic sinus
 function. This task can be considered simple, because the different parts of the
-sine wave occur multiple times in the data, i.e. the function is periodic.
+sine wave occur multiple times in the data.
 It is therefore interesting how
 robust the network architectures are with regard to different kinds of noise.
 
@@ -30,7 +30,9 @@ Table~\ref{tab:gridparameters}. All models are trained using the \emph{Adam}
 optimizer and $10$ time sequence entries are used to predict $1$ directly
 consecutive point. These assumptions are made in order to keep the grid search
 feasible. For training, testing and validation, a range from $0$ to $6 \pi$ is
-used. Expressed more formally,
+used. The data is split equally between the datasets, the first third used as 
+the training and the second third used as the validation set.
+Expressed more formally,
 we provide information about the last 10 time sequence points
 to the network and want to predict the next point, as given in
 Equation~\ref{equ:sine}. That is, we want to estimate $x(t)$ with a function
@@ -55,7 +57,7 @@ $F(x(t), x(t-1), \cdots, x(t-9))$ that is computed using a neural network.
         Neural network architecture & ["MLP", "LSTM", "CNN"]    \\
     \end{tabular}
     \caption{Parameter combinations used for the grid search. Each possible value
-        of each parameter is combined with every possible value of each other
+        of each parameter is combined with each possible value of each other
         parameter. Note that the \emph{CNN}s are evaluated with 1, 2, or 3 hidden
         layers of with 8 filters instead.}
     \label{tab:gridparameters}
@@ -106,9 +108,9 @@ a higher $\sigma$ increases the test error, as expected. But it seems that the
 neural networks are less capable of filtering noise from a Wiener process, and 
 for a high $\sigma$ of this type of noise completely lose the ability to 
 approximate the underlying sinus function on the first look. A further analysis
-of the used networks architectures shows that this is merely by inluding 
+of the used networks architectures shows that this is merely caused by inluding 
 \emph{CNN}s trained with learning rate $0.1$. After excluding them, the test 
-error goes down to a high but reasonable result.
+error goes down to a high but reasonable value.
 
 \begin{table}
     \centering
@@ -123,7 +125,7 @@ error goes down to a high but reasonable result.
     \label{tab:wiener_iid}
 \end{table}
 
-In Figure~\ref{fig:sineresult}, we see the best neural networks found using 
+In Figure~\ref{fig:sinenoisefree}, we see the best neural networks found using 
 the large grid search for a noise free time series. The approximation is 
 remarkably accurate and no deviation can be found. If we add different kinds of 
 noise, the grid search is still able to find suitable architectures, 
@@ -170,7 +172,8 @@ considered situations.
     \includegraphics[width=0.6\textwidth]{figures/histogram.pdf}
     \caption{Demonstration of grid search results. A few networks with high
     test error have to be considered during the evaluation to get more 
-    robust interpretations.}
+    robust interpretations. The majority of trained networks yield smaller
+    test error values.}
     \label{fig:histogram}
 \end{figure}
 
@@ -208,11 +211,16 @@ $\tau > 16.8$ the system shows chaotic behavior.
     \label{equ:mackey}
 \end{equation}
 
-By using the Euler method to discretize the Mackey-Glass time series, we can
+By using the Euler method to discretize the Mackey-Glass time series shown in 
+Equation~\ref{equ:mackey_euler}, we can
 see that the chaotic behavior gets stronger for increasing $\tau > 16.8$. In
 Figure~\ref{fig:mackey_chaos}, we simulate the solution of the Mackey-Glass
 time series for slightly different initial conditions. It is clearly visible
-that for $\tau = 17$, the time series diverges slower than for $\tau = 25$.
+that for $\tau = 17$, the time series diverges slower than for $\tau = 25$. In 
+the phase plot in that figure we can see that the trajectory of the time delay 
+$\tau = 17$ looks still similar to the non-chaotic trajectory of the time delay
+$\tau = 15$. But for $\tau=25$, the chaos is so strong such that no similarity 
+to the non-chaotic trajectories can be recognized.
 
 The first approach to predict the short-time behavior of chaotic time series
 was done by Farmer \textit{et al.} who proposed a \texttt{local approximation}
@@ -249,7 +257,7 @@ Two of the latest developments are the usage of Wavelet Networks
     \label{fig:mackey_chaos}
 \end{figure}
 
-In accordance with the approach used by Caraballo \textit{et al.}
+In accordance with the approach used by López-Caraballo \textit{et al.}
 \cite{lopez2016}, we predict $x(t+6)$ based on the information of the time
 series points in $x(t)$, $x(t-6)$, $x(t-12)$, and $x(t-18)$. We investigate how
 an increase in chaotic behavior impacts the prediction capability of the
