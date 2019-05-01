@@ -20,7 +20,7 @@ Expressed more formally,
 we provide information about the last 10 time sequence points
 to the network and want to predict the next point, as given in
 Equation~\ref{equ:sine}. That is, we want to estimate $x(t)$ with a function
-$F(x(t), x(t-1), \cdots, x(t-9))$ that is computed using a neural network.
+$F(x(t), x(t-1), \cdots, x(t-9))$ that is approximated using a neural network.
 
 \begin{equation}
     \hat{x} (t + 1) \approx F(x(t), x(t-1), \cdots, x(t-9))
@@ -43,7 +43,7 @@ $F(x(t), x(t-1), \cdots, x(t-9))$ that is computed using a neural network.
     \caption{Parameter combinations used for the grid search. Each possible value
         of each parameter is combined with each possible value of each other
         parameter. Note that the \emph{CNN}s are evaluated with 1, 2, or 3 hidden
-        layers of with 8 filters instead.}
+        layers of with 8 filters instead of the given numbers of hidden nodes.}
     \label{tab:gridparameters}
 \end{table}
 
@@ -51,7 +51,7 @@ As we expected based on our literature review, the \emph{LSTM} yielded lowest
 test error
 on the noise free time series data as seen in Table~\ref{tab:noisefree_result}.
 We use the MSE here and evaluate on the test error because we are interested in 
-generalisation capability of the neural networks, which can not be evaluated 
+generalisation capability of the neural networks, which cannot be evaluated 
 based on the training error.
 After investigating the high error for the \emph{CNN} architecture, we discover
 that this architecture needs a lower training rate than the \emph{LSTM}
@@ -91,7 +91,8 @@ Next we investigate the influence of the type of noise
 and the standard deviation of the noise on the results 
 based on our grid search. The average error is
 strongly impacted as seen in Table~\ref{tab:wiener_iid}. We see that
-a higher $\sigma$ increases the test error. But it seems that the 
+a higher standard deviation ($\sigma$)
+increases the test error. But it seems that the 
 neural networks are less capable of filtering noise from a Wiener process, and 
 for a high $\sigma$ of this type of noise completely lose the ability to 
 approximate the underlying sinus function on the first look. A further analysis
@@ -112,7 +113,7 @@ error goes down to a high but reasonable value.
     \label{tab:wiener_iid}
 \end{table}
 
-In Figure~\ref{fig:sinenoisefree}, we see the best neural networks found using 
+In Figure~\ref{fig:sinenoisefree}, we see the best neural network found using 
 the large grid search for a noise free time series. The approximation is 
 remarkably accurate and no deviation can be found. If we add different kinds of 
 noise, the grid search is still able to find suitable architectures, 
@@ -273,10 +274,11 @@ followed by a feedforward layer to sum up for the output value.
 The first 500 time points of the time series are used for training, the 500
 following points for validation. Additional 500 points are not used during the
 training procedure at all and form the test set. For training our models, we 
-train the models for 100 epochs. The learning rate of $0.01$ for the Adam 
+train the models for 100 epochs. The learning rate of $0.01$ is used 
+for the Adam 
 optimizer, because it outperforms the default learning rate in this situation.
 
-It can be seen that for non-chaotic solutions of the macke-glass time series the
+It can be seen that for non-chaotic solutions of the Mackey-Glass time series the
 model is able to predict precisely, and that for values of $\tau > 20$ the
 chaotic behavior is strong enough to impact the prediction. We explain the low
 error for $\tau = 21$ in the ability of the network to compensate for the amount
@@ -363,7 +365,8 @@ approximately 9 times higher error rate when increasing the standard
 deviation of the Wiener process from $0.01$ to $0.1$.
 
 But more interestingly,
-the negative effect of the noise is stronger if the noise is memorizing, i.e. if
+the negative effect of the noise is stronger if the noise generated 
+from a Wiener process, i.e. if
 the effect of the noise in time step $t$ impacts the time series in time step
 $t + 1$. We explain this with an increase in chaotic behavior induced by this
 type of noise to the Mackey-Glass time series. Since chaotic time series by
@@ -411,7 +414,7 @@ the LSTM architecture and state fundamental limits for neural networks to
 approximate stochastic time series.
 
 The \texttt{gillespy} framework is used to 
-model a stochastic reaction system with 2 states, described 
+model a stochastic reaction system with 2~states, described 
 in Equation~\ref{equ:oscillator}.
 One protein $X$ is produced more the less of the other protein $Y$
 exists. $X$ and $Y$ are both continuously reduced but $Y$ gets reduced stronger
@@ -471,7 +474,7 @@ recognized, just with a smaller amplitude.
     \centering
     \includegraphics[width=\textwidth]{figures/nn_limitation.pdf}
     \caption{Prediction of stochastic time series using deterministic
-        \textbf{LSTM} network. Sampled ground truth data are unseen for the 
+        \emph{LSTM} network. Sampled ground truth data are unseen for the 
         network.
         Mean computed on all stochastic trajectories. The standard devation 
         increases from the given starting point, because the stochastic

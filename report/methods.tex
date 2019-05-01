@@ -43,7 +43,7 @@ prediction. This function is computed in Equation~\ref{equ:rmse}.
     \label{equ:rmse}
 \end{equation}
 
-In order to train ours models, we apply the \emph{Adam} optimizer
+In order to train our models, we apply the \emph{Adam} optimizer
 \cite{kingma2014}. This famous optimization algorithm (more than 20.000
 citations in less than 5 years) is commonly used to train neural networks and
 improves the stochastic gradient descent algorithm. Other optimization
@@ -84,5 +84,5 @@ the random number generator of \texttt{numpy} is set to the seed $0$ to ensure
 reproducibility of data generation.
 The time series data for the biological oscillator
 is generated using \texttt{gillespy} \cite{abel2016}, which only works with 
-\texttt{Python} in version 2. For these application,
+\texttt{Python} in version 2. For this application,
 the version $2.7.15$ of \texttt{Python} is used.

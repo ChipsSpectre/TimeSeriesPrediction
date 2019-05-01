@@ -9,9 +9,10 @@ configuration of the optimization algorithm w.r.t. the learning rate in order
 to find the optimal results. It is remarkable that even the time series 
 forecasting for a function with noise from a Wiener process yielded good 
 results, since this type of noise makes the function indifferentiable at any 
-position. Furthermore, we applied neural networks to predict the chaotic 
+position. The error rates are only slightly higher than those of prediction 
+of $i.i.d.$ noise. Furthermore, we applied neural networks to predict the chaotic 
 Mackey-Glass time series. We can show that the prediction gets more challenging
-for the neural network with a higher delay parameter $\tau$, which strenghtens
+for the neural network with a higher delay parameter $\tau$, which strengthens
 chaotic characteristics. When applying noise from a Wiener process, the error
 rate of the prediction increases by approximately one order of magnitude. The
 Wiener process perturbates the chaotic system and influences the subsequent
