@@ -1,0 +1,43 @@
+\section{Introduction}
+
+In various kinds of diseases, it is important to choose the correct treatment at
+the current time point. Since the human body is too complex to be described
+directly using mathematics, special features are modeled with mathematical
+systems such as the Mackey-Glass equations for respiratory and hematopoietic
+diseases \cite{mackey1977}. These models make use of available data about
+previous information in order to reduce the uncertainty under which a decision
+is made. This is especially important when the consequences of a decision are
+severe, for example the decision of breast cancer treatment after radiation.
+This particular problem can be addressed by using a stochastic differential
+equation, as done by Oroji \textit{et al} \cite{oroji2016}.
+
+In different kinds of biological models, even chaotic behavior is observed. The
+Mackey-Glass equations possess chaotic behavior for certain choices of their
+parameters, as shown by Farmer \cite{farmer1982}. That means that even small
+measurement errors of the initial state lead to exponentially increasing
+errors of the time series prediction. Because of that, it is important
+that the time series prediction should be as robust as possible against noise.
+
+This gets important in particular because biological data cannot be measured 
+without the presence of noise. In
+this report, we show that different kinds of noise assumptions can impact the
+results of time series prediction. We evaluate all our investigated problems
+with regard to the popular independent and identically distributed ($i.i.d.$)
+random noise as well as noise from a
+discretized Wiener process.
+Since mathematical models of biological systems cannot describe their
+characteristics perfect and error-free, it is assumed that the latter type of
+noise is more realistic. But unfortunately this kind of noise increases the
+difficulty of time series prediction, even for simple mathematical functions,
+as seen in Section~\ref{sec:sine}.
+
+The remaining report is structured as follows. First, we perform proper time
+series prediction on the sinus function and show how different noise models
+impact the prediction ability of our network models. After that, we show how
+different levels of chaos impact the possibility to forecast the development
+of time series at the example of the Mackey-Glass time series. We show
+how the variance and the type
+of noise impacts the possibility to predict deterministic
+chaotic time series at the example of this time series. Last
+but not least, we report fundamental limitations of neural networks to
+approximate stochastic time series at the example of biological oscillators.

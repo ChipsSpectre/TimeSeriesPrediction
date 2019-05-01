@@ -3,7 +3,7 @@
 \usepackage{graphicx}
 \usepackage{mathtools}
 \usepackage{subcaption}
-\addtolength{\textwidth}{6mm}
+\addtolength{\textwidth}{7mm}
 
 \title{Challenges in chaotic time series forecasting}
 \author{Maximilian Hornung}
@@ -12,49 +12,7 @@
 \maketitle
 
 \input{abstract.tex}
-
-\section{Introduction}
-
-In various kinds of diseases, it is important to choose the correct treatment at
-the current time point. Since the human body is too complex to be described
-directly using mathematics, special features are modeled with mathematical
-systems such as the Mackey-Glass equations for respiratory and hematopoietic
-diseases \cite{mackey1977}. These models make use of available data about
-previous information in order to reduce the uncertainty under which a decision
-is made. This is especially important when the consequences of a decision are
-severe, for example the decision of breast cancer treatment after radiation.
-This particular problem can be addressed by using a stochastic differential
-equation, as done by Oroji \textit{et al} \cite{oroji2016}.
-
-In different kinds of biological models, chaotic behavior is observed. The
-Mackey-Glass equations possess chaotic behavior for certain choices of their
-parameters, as shown by Fischer \cite{farmer1982}. That means that even small
-measurement errors of the initial state lead to exponentially increasing
-errors of the time series prediction. Because of that, it is important
-that the time series prediction should be as robust as possible against noise.
-
-This gets imporant in particular because another characterstic of dealing with
-biological data is the presence of noise. In
-this report, we show that different kinds of noise assumptions can impact the
-results of time series prediction. We evaluate all our investigated problems
-with regard to the popular $i.i.d.$ random noise as well as noise from a
-discretized Wiener process, i.e. memorizing random
-noise. Since mathematical models of biological systems cannot describe their
-characteristics perfect and error-free, it is assumed that the latter type of
-noise is more realistic. But unfortunately this kind of noise increases the
-difficulty of time series prediction, even for simple mathematical functions,
-as seen in Section~\ref{sec:sine}.
-
-The remaining report is structured as follows. First, we perform proper time
-series prediction on the sinus function and show how different noise models
-impact the prediction ability of our network models. After that, we show how
-different levels of chaos impact the possibility to forecast the development
-of time series at the example of the Mackey-Glass time series. We show
-how the variance and the type
-of noise impacts the possibility to predict deterministic
-chaotic time series at the example of the Mackey-Glass time series. Last
-but not least, we report fundamental limitations of neural networks to
-approximate stochastic time series at the example of biological oscillators.
+\input{introduction.tex}
 
 \section{Methods}
 
@@ -89,7 +47,7 @@ certain edges etc.) we assume that similar hierarchies of features can be found
 in time series data.
 
 The loss is measured using the root mean squared error (\emph{RMSE}), because
-Caraballo \textit{et al.} \cite{caraballo2016} use this error function to
+López-Caraballo \textit{et al.} \cite{lopez2016} use this error function to
 compare various other neural network approaches for Mackey-Glass time series
 prediction. This function is computed in Equation~\ref{equ:rmse}.
 
@@ -344,7 +302,7 @@ technique \cite{farmer1987}. After improval of predictions using support vector
 machines by Müller \textit{et al.} \cite{muller1997}, the focus in research
 shifted towards artifical neural networks which enabled even better predictions.
 Two of the latest developments are the usage of Wavelet Networks
-\cite{alexandridis2013} and particle swarm optimization \cite{caraballo2016}.
+\cite{alexandridis2013} and particle swarm optimization \cite{lopez2016}.
 
 \begin{equation}
     x(t+1) = x(t) + \frac{\beta x(t - \tau)}{1 + x^{n}(t - \tau)} - \gamma x(t)
@@ -374,7 +332,7 @@ Two of the latest developments are the usage of Wavelet Networks
 \end{figure}
 
 In accordance with the approach used by Caraballo \textit{et al.}
-\cite{caraballo2016}, we predict $x(t+6)$ based on the information of the time
+\cite{lopez2016}, we predict $x(t+6)$ based on the information of the time
 series points in $x(t)$, $x(t-6)$, $x(t-12)$, and $x(t-18)$. We investigate how
 an increase in chaotic behavior impacts the prediction capability of the
 different neural network architectures. The results for the MLP
@@ -406,7 +364,7 @@ of chaos up to this point.
 
 In the next step, we compare our MLP and our LSTM
 architecture with the results stated by Caraballo \textit{et al.}
-\cite{caraballo2016} in Table~\ref{tab:mackey_results}. We
+\cite{lopez2016} in Table~\ref{tab:mackey_results}. We
 compare our results with a linear model, a cascade correlation neural network
 and a radial basis function (\emph{RBF})
 neural network additional to their approach to
@@ -448,10 +406,10 @@ points.
         Linear model                   & 0.5503                                   \\
         Cascade correclation NN        & 0.0624                                   \\
         \textit{proposed LSTM}         & 0.0131                                   \\
-        \textit{proposed MLP}          & 0.0125 (vs. 0.0262 \cite{caraballo2016}) \\
+        \textit{proposed MLP}          & 0.0125 (vs. 0.0262 \cite{lopez2016}) \\
         RBFNN                          & 0.0114                                   \\
         \textit{proposed CNN}          & 0.0075                                   \\
-        ANN + PSO \cite{caraballo2016} & 0.0053                                   \\
+        ANN + PSO \cite{lopez2016} & 0.0053                                   \\
     \end{tabular}
     \caption{Mackey-Glass time series forecasting results using different neural
         network architectures.}
