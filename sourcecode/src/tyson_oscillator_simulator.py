@@ -13,7 +13,7 @@ sys.path[:0] = ['..']
 
 if __name__ == '__main__':
     np.random.seed(0)
-    NUM_PARAMS = 7 
+    NUM_PARAMS = 7
     n_traj = 101
     n_units = 100
     figure_path = os.path.join("..", "report", "figures")
@@ -30,7 +30,8 @@ if __name__ == '__main__':
         }
     ]
 
-    tyson_model = Tyson2StateOscillator(timespan=n_units, parameter_values = params[0])
+    tyson_model = Tyson2StateOscillator(
+        timespan=n_units, parameter_values=params[0])
 
     t1 = time.time()
     tyson_trajectories = tyson_model.run(show_labels=False, seed=0,
@@ -47,13 +48,19 @@ if __name__ == '__main__':
     for i in range(n_traj-1):
         ps = params[0]
         x[i, :, 0] = np.array([ps["P"], ps["kt"], ps["kd"], ps["a0"],
-            ps["a1"], ps["a2"], ps["kdx"]])
+                               ps["a1"], ps["a2"], ps["kdx"]])
 
     y = np.zeros([n_traj-1, n_units])
     for i in range(n_traj-1):
         y[i, :] = tyson_trajectories[i][:, 1]
+
     # normalize y
     y = (y - np.min(y)) / (np.max(y) - np.min(y))
+
+    std = []
+    for i in range(y.shape[1]):
+        std.append(np.std(y[:, i]))
+    std = np.array(std)
 
     net.fit(x, y, epochs=100)
 
@@ -69,12 +76,16 @@ if __name__ == '__main__':
 
     y_mean = np.mean(y, axis=0)
 
+    # plt.figure(figsize=(20,6))
     plt.plot(np.arange(len(y_test)), y_test)
     plt.plot(np.arange(len(pred)), pred)
+
     plt.plot(np.arange(len(y_mean)), y_mean)
+    plt.fill_between(np.arange(len(y_mean)), y_mean - std, y_mean + std,
+                     color='gray', alpha=0.2)
     plt.title("Stochastic time series generation")
     plt.xlabel("time step")
     plt.ylabel("time series value X(t)")
-    plt.legend(("ground truth", "prediction", "mean"))
+    plt.legend(("ground truth", "prediction", "mean", "standard deviation"))
+    plt.savefig(os.path.join(figure_path, "nn_limitation.pdf"))
     plt.show()
-    # plt.savefig(os.path.join(figure_path, "nn_limitation.pdf"))

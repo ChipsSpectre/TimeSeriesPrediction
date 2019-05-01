@@ -411,7 +411,7 @@ the LSTM architecture and state fundamental limits for neural networks to
 approximate stochastic time series.
 
 The \texttt{gillespy} framework is used to 
-model a stochastic reaction system with 2 states as defined 
+model a stochastic reaction system with 2 states, described 
 in Equation~\ref{equ:oscillator}.
 One protein $X$ is produced more the less of the other protein $Y$
 exists. $X$ and $Y$ are both continuously reduced but $Y$ gets reduced stronger
@@ -471,7 +471,10 @@ recognized, just with a smaller amplitude.
     \centering
     \includegraphics[width=\textwidth]{figures/nn_limitation.pdf}
     \caption{Prediction of stochastic time series using deterministic
-        \textbf{LSTM} network. Sampled ground truth data are unseen for the network.
-        Mean computed on all stochastic trajectories.}
+        \textbf{LSTM} network. Sampled ground truth data are unseen for the 
+        network.
+        Mean computed on all stochastic trajectories. The standard devation 
+        increases from the given starting point, because the stochastic
+        trajectories change their values in different ways over time.}
     \label{fig:nn_limitation}
 \end{figure}
