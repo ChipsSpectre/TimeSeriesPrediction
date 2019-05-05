@@ -3,9 +3,20 @@
 \usepackage{graphicx}
 \usepackage{mathtools}
 \usepackage{subcaption}
-\addtolength{\textwidth}{11mm}
-\addtolength{\textheight}{1mm}
+\usepackage{hyperref}
 
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+ 
+\urlstyle{same}
+
+\addtolength{\textwidth}{11mm}
+\addtolength{\textheight}{5mm}
+  
 \title{Challenges in biological time series forecasting using 
 neural networks}
 \author{Maximilian Hornung}
@@ -15,7 +26,7 @@ neural networks}
 
 \input{abstract.tex}
 \input{introduction.tex}
-\input{methods.tex}
+\input{methods.tex} 
 \input{evaluation.tex}
 \input{conclusion.tex}
 

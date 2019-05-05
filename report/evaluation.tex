@@ -109,7 +109,9 @@ error goes down to a high but reasonable value.
         Wiener process & 24.153 & 0.0524 & 48.254 (1.322) \\
     \end{tabular}
     \caption{Average MSE aggregated by the type of noise and the noise
-        standard deviation.}
+        standard deviation. To ensure the results do not depend on the network 
+        architecture, the mean value of the MSE is taken across all configurations
+        and network architectures evaluated in the grid search.}
     \label{tab:wiener_iid}
 \end{table}
 
@@ -157,19 +159,25 @@ considered situations.
     \centering
     \includegraphics[width=0.6\textwidth]{figures/Noise_free.pdf}
     \caption{Demonstration of grid search results. For the noise free case,
-    a nearly perfect approximation is achieved.}
+    a nearly perfect approximation is achieved. The figure uses a \emph{MLP}
+    architecture, that contains 1 hidden layer with 5 neurons and is trained 
+    for 500 epochs with a learning rate of 0.001.}
     \label{fig:sinenoisefree}
 \end{figure}
 
-\begin{figure}
-    \centering
+\begin{figure}s
+\centering
     \includegraphics[width=0.45\textwidth]{figures/iid_low_noise.pdf}
     \includegraphics[width=0.45\textwidth]{figures/iid_high_noise.pdf}
     \includegraphics[width=0.45\textwidth]{figures/wiener_low_noise.pdf}
     \includegraphics[width=0.45\textwidth]{figures/wiener_high_noise.pdf}
     \caption{Demonstration of grid search results. The low noise has a
     standard deviation of $\sigma =0.01$ and the high noise uses $\sigma=0.1$,
-    independent of the type of noise.}
+    independent of the type of noise. Both predictions for $i.i.d.$ noise 
+    are obtained using \emph{LSTM} networks. The low variance noise from the 
+    Wiener process is best approximated using a \emph{CNN}, while a \emph{MLP}
+    architecture shows best results for the high variance noise from the 
+    Wiener process. For details refer to Table~\ref{tab:architectures}.}
     \label{fig:sineresult}
 \end{figure}
 
